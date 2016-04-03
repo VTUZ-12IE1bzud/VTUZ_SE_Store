@@ -1,6 +1,25 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "io.realm:realm-gradle-plugin:0.88.2"
+        classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
+    }
+}
+
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'realm-android'
+
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 0
+def versionBuild = 0
 
 android {
+
     compileSdkVersion 23
     buildToolsVersion "24.0.0 rc2"
 
@@ -8,21 +27,63 @@ android {
         applicationId "ru.annin.store"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}" + (versionPatch == 0 ? "" : ".${versionPatch}")
+        resConfigs "en", "ru"
     }
+
     buildTypes {
+        debug { versionNameSuffix "D" }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'arm', 'arm-v7a', 'arm64', 'mips', 'x86', 'x86_64'
+            universalApk true
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    dexOptions {
+        incremental true
+        preDexLibraries true
+        javaMaxHeapSize "4G"
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.2.1'
-    compile 'com.android.support:support-v4:23.2.1'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    // Android Support
     compile 'com.android.support:design:23.2.1'
+    compile 'com.android.support:support-v4:23.2.1'
+    compile 'com.android.support:appcompat-v7:23.2.1'
+
+    // Dagger
+    compile 'com.google.dagger:dagger:2.2'
+    apt 'com.google.dagger:dagger-compiler:2.2'
+
+    // Rx
+    compile 'io.reactivex:rxjava:1.1.2'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+
+    // UI
+    compile 'com.jakewharton:butterknife:7.0.1'
+
+    // Test's
+    testCompile 'junit:junit:4.12'
 }

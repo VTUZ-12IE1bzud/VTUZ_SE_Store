@@ -1,5 +1,28 @@
 <resources>
-    <string name="app_name">Store</string>
+    <string name="app_name">Склад</string>
+
+    <!-- Activity Label -->
+    <string name="title_activity_about">О программе</string>
+
+    <!-- About -->
+    <string name="title_app_version_format">Склад\nверсия %1$s (сборка %2$d)</string>
+    <string name="msg_app_description">Приложение разработано студентом группы 12ИЭ1бзу Анниным П.А.,
+        в качестве курсовой работы по дисциплине "Программная инженерия". Вариант 16.</string>
+    <string name="msg_app_copyright">Copyright 2016, Pavel Annin
+        \nLicensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        \nYou may obtain a copy of the License at
+        \nhttp://www.apache.org/licenses/LICENSE-2.0
+        \nUnless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        \nSee the License for the specific language governing permissions and
+        limitations under the License.</string>
+    <string name="msg_app_dependencies">При разработке использовались сторонние зависимости:
+        \n    • Realm 0.88.2 (https://github.com/realm/realm-java), Apache 2.0 license;
+        \n    • Dagger 2 (https://github.com/google/dagger), Apache 2.0 license;
+        \n    • ButterKnife 7.0.1 (https://github.com/JakeWharton/butterknife), Apache 2.0 license;</string>
+
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
