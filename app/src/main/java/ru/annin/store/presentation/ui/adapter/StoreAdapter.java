@@ -16,7 +16,6 @@
 
 package ru.annin.store.presentation.ui.adapter;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,38 +26,37 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.annin.store.R;
-import ru.annin.store.domain.model.UnitModel;
+import ru.annin.store.domain.model.StoreModel;
 
 /**
- * <p> Адаптер единиц измерения. </p>
+ * <p> Адаптер складов. </p>
  *
  * @author Pavel Annin.
  */
-public class UnitAdapter extends RealmRecyclerAdapter<UnitModel, UnitAdapter.ViewHolder> {
+public class StoreAdapter extends RealmRecyclerAdapter<StoreModel, StoreAdapter.ViewHolder> {
 
     // Listener's
     private OnClickListener listener;
 
-    public UnitAdapter(boolean automaticUpdate) {
+    public StoreAdapter(boolean automaticUpdate) {
         super(automaticUpdate);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_unit, parent, false);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_store, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final UnitModel unit = mRealmResults.get(position);
-        if (unit != null && unit.isValid()) {
-            holder.showName(unit.getName(), unit.getSymbol())
-                    .showDescription(unit.getDescription());
+        final StoreModel store = mRealmResults.get(position);
+        if (store != null && store.isValid()) {
+            holder.showName(store.getName());
         }
     }
 
-    public UnitModel getItem(int position) {
+    public StoreModel getItem(int position) {
         return mRealmResults.get(position);
     }
 
@@ -71,21 +69,14 @@ public class UnitAdapter extends RealmRecyclerAdapter<UnitModel, UnitAdapter.Vie
         // View's
         @Bind(R.id.txt_title)
         TextView txtTitle;
-        @Bind(R.id.txt_description)
-        TextView txtDescription;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public ViewHolder showName(String name, String symbol) {
-            txtTitle.setText(txtTitle.getResources().getString(R.string.msg_unit_item_name_format, name, symbol));
-            return this;
-        }
-
-        public ViewHolder showDescription(@NonNull final String text) {
-            txtDescription.setText(text);
+        public ViewHolder showName(String name) {
+            txtTitle.setText(name);
             return this;
         }
 
@@ -98,6 +89,6 @@ public class UnitAdapter extends RealmRecyclerAdapter<UnitModel, UnitAdapter.Vie
     }
 
     public interface OnClickListener {
-        void onItemClick(UnitModel model);
+        void onItemClick(StoreModel model);
     }
 }

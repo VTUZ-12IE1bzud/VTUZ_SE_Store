@@ -16,17 +16,16 @@
 
 package ru.annin.store.presentation.ui.view;
 
+import android.support.annotation.StringRes;
+
 /**
- * View главного экрана.
+ * Представление экрана "Склад".
  *
  * @author Pavel Annin.
  */
-public interface MainView {
+public interface DetailStoreView {
 
-    void onGitHubOpen();
-    void onCardProductsOpen();
-    void onStoresOpen();
-    void onUnitsOpen();
-    void onAboutOpen();
+    void onFinish();
 
+    String getString(@StringRes int resId);
 }

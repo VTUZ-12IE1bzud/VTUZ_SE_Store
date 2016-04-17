@@ -18,14 +18,18 @@ package ru.annin.store.presentation.navigation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import ru.annin.store.presentation.ui.activity.AboutActivity;
+import ru.annin.store.presentation.ui.activity.CardProductActivity;
+import ru.annin.store.presentation.ui.activity.DetailStoreActivity;
 import ru.annin.store.presentation.ui.activity.DetailUnitActivity;
 import ru.annin.store.presentation.ui.activity.MainActivity;
+import ru.annin.store.presentation.ui.activity.StoreActivity;
 import ru.annin.store.presentation.ui.activity.UnitActivity;
 
 /**
@@ -43,6 +47,35 @@ public class Navigator {
 
     public void navigate2Main(@NonNull Context ctx) {
         final Intent intent = new Intent(ctx, MainActivity.class);
+        ctx.startActivity(intent);
+    }
+
+    public void navigate2GitHub(@NonNull Context ctx) {
+        final String url = "https://github.com/anninpavel/VTUZ_SoftwareEngineering_Store";
+        final Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        ctx.startActivity(intent);
+    }
+
+    public void navigate2CardProducts(@NonNull Context ctx) {
+        final Intent intent = new Intent(ctx, CardProductActivity.class);
+        ctx.startActivity(intent);
+    }
+
+    public void navigate2Stores(@NonNull Context ctx) {
+        final Intent intent = new Intent(ctx, StoreActivity.class);
+        ctx.startActivity(intent);
+    }
+
+    public void navigate2CreateStore(@NonNull Context ctx) {
+        final Intent intent = new Intent(ctx, DetailStoreActivity.class);
+        ctx.startActivity(intent);
+    }
+
+    public void navigate2OpenStore(@NonNull Context ctx, @NonNull String unitId) {
+        final Intent intent = new Intent(ctx, DetailStoreActivity.class);
+        intent.setAction(Intent.ACTION_EDIT);
+        intent.putExtra(DetailStoreActivity.EXTRA_STORE_ID, unitId);
         ctx.startActivity(intent);
     }
 

@@ -7,18 +7,31 @@
     <string name="title_activity_about">О программе</string>
     <string name="title_activity_unit">Единицы измерения</string>
     <string name="title_activity_unit_detail">Единица измерения</string>
+    <string name="title_activity_card_product">Карточка товара</string>
+    <string name="title_activity_store">Склады</string>
+    <string name="title_activity_store_detail">Склад</string>
 
     <!-- Nav -->
     <string name="title_nav_item_unit">@string/title_activity_unit</string>
+    <string name="title_nav_item_card_product">@string/title_activity_card_product</string>
+    <string name="title_nav_item_store">@string/title_activity_store</string>
     <string name="title_nav_item_about">@string/title_activity_about</string>
 
     <!-- Main -->
     <string name="title_nav_drawer_open">Отркыть меню</string>
     <string name="title_nav_drawer_close">Закрыть меню</string>
 
+    <!-- Store -->
+    <string name="error_store_used_removed">Удалеине не возможно, склад используется</string>
+
+    <!-- Store Detail -->
+    <string name="msg_store_name">Название</string>
+    <string name="action_store_save">Сохранить</string>
+    <string name="error_store_field_empty">Заполните поле</string>
+
     <!-- Unit -->
     <string name="msg_unit_item_name_format">%1$s (%2$s)</string>
-    <string name="error_unit_used_removed">Удалеине не возможно единица измериня используется</string>
+    <string name="error_unit_used_removed">Удалеине не возможно единица измерения используется</string>
 
     <!-- Unit Detail -->
     <string name="msg_unit_name">Название</string>

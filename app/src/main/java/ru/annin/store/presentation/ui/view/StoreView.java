@@ -14,41 +14,19 @@
  * limitations under the License.
  */
 
-package ru.annin.store.domain.model;
+package ru.annin.store.presentation.ui.view;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.RealmClass;
+import android.support.annotation.NonNull;
 
 /**
- * <p>Модель данных товара.</p>
+ * Представление экрана "Склады".
  *
  * @author Pavel Annin.
  */
-@RealmClass
-public class ProductModel extends RealmObject {
+public interface StoreView {
 
-    @PrimaryKey
-    private String id;
-    private String name;
+    void onCreateStoreOpen();
+    void onStoreOpen(@NonNull String storeId);
+    void onFinish();
 
-    public ProductModel() {
-        // Empty.
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

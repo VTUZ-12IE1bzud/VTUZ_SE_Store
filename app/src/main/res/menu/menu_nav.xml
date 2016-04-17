@@ -2,16 +2,28 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group>
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/action_nav_card_producat"
+            android:icon="@drawable/ic_book"
+            android:title="@string/title_nav_item_card_product" />
+
+        <item
+            android:id="@+id/action_nav_store"
+            android:icon="@drawable/ic_book"
+            android:title="@string/title_nav_item_store" />
+
         <item
             android:id="@+id/action_nav_units"
             android:icon="@drawable/ic_book"
-            android:title="@string/title_nav_item_unit"/>
+            android:title="@string/title_nav_item_unit" />
     </group>
 
-    <item
-        android:id="@+id/action_nav_about"
-        android:icon="@drawable/ic_about"
-        android:title="@string/title_nav_item_about" />
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/action_nav_about"
+            android:icon="@drawable/ic_about"
+            android:title="@string/title_nav_item_about" />
+    </group>
 
 </menu>

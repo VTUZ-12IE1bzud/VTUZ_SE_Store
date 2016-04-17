@@ -16,7 +16,9 @@
 
 package ru.annin.store.presentation.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import javax.inject.Inject;
@@ -24,33 +26,40 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ru.annin.store.R;
-import ru.annin.store.presentation.presenter.MainPresenter;
-import ru.annin.store.presentation.ui.view.MainView;
-import ru.annin.store.presentation.ui.viewholder.MainViewHolder;
+import ru.annin.store.presentation.presenter.DetailStorePresenter;
+import ru.annin.store.presentation.ui.view.DetailStoreView;
+import ru.annin.store.presentation.ui.viewholder.DetailStoreViewHolder;
 
 /**
- * Главный экран.
+ * Экран "Склад".
  *
  * @author Pavel Annin.
  */
-public class MainActivity extends BaseActivity implements MainView {
+public class DetailStoreActivity extends BaseActivity implements DetailStoreView {
+
+    public static final String EXTRA_STORE_ID = "ru.annin.store.extra.store_id";
 
     @Inject
-    MainPresenter mPresenter;
-    @Bind(R.id.drawer_layout)
+    DetailStorePresenter mPresenter;
+    @Bind(R.id.main_container)
     View mainView;
-    private MainViewHolder mViewHolder;
+    private DetailStoreViewHolder mViewHolder;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_store_detail);
         getApplicationComponent().inject(this);
         ButterKnife.bind(this);
-        mViewHolder = new MainViewHolder(this, mainView);
+        mViewHolder = new DetailStoreViewHolder(mainView);
         mPresenter.setViewHolder(mViewHolder);
         mPresenter.setView(this);
-        mPresenter.onInitialization();
+        if (Intent.ACTION_EDIT.equals(getIntent().getAction()) && getIntent().getExtras() != null
+                && getIntent().getExtras().containsKey(EXTRA_STORE_ID)) {
+            mPresenter.onInitialization(getIntent().getExtras().getString(EXTRA_STORE_ID));
+        } else {
+            mPresenter.onInitialization();
+        }
     }
 
     @Override
@@ -74,34 +83,7 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     @Override
-    public void onBackPressed() {
-        if (mPresenter.onBackPress()) {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public void onGitHubOpen() {
-        mNavigator.navigate2GitHub(this);
-    }
-
-    @Override
-    public void onCardProductsOpen() {
-        mNavigator.navigate2CardProducts(this);
-    }
-
-    @Override
-    public void onStoresOpen() {
-        mNavigator.navigate2Stores(this);
-    }
-
-    @Override
-    public void onUnitsOpen() {
-        mNavigator.navigate2Units(this);
-    }
-
-    @Override
-    public void onAboutOpen() {
-        mNavigator.navigate2About(this);
+    public void onFinish() {
+        finish();
     }
 }

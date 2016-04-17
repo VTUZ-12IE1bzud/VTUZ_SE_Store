@@ -28,6 +28,9 @@ import io.realm.annotations.RealmClass;
 @RealmClass
 public class StoreModel extends RealmObject {
 
+    public static final String FIELD_ID = "id";
+    public static final String FIELD_NAME = "name";
+
     @PrimaryKey
     private String id;
     private String name;

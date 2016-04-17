@@ -19,6 +19,7 @@ package ru.annin.store.domain.repository;
 import android.support.annotation.NonNull;
 
 import io.realm.RealmResults;
+import ru.annin.store.domain.model.StoreModel;
 import ru.annin.store.domain.model.UnitModel;
 import rx.Observable;
 
@@ -28,6 +29,30 @@ import rx.Observable;
  * @author Pavel Annin.
  */
 public interface DataRepository {
+
+    /** Возвращает коллекцию складов. */
+    Observable<RealmResults<StoreModel>> listStores();
+
+    Observable<StoreModel> getStoreById(String storeId);
+
+    /**
+     * Создает новый склад.
+     * @param name Название склада.
+     * @return Результат создания.
+     */
+    boolean createStore(@NonNull String name);
+
+    /**
+     * Сохраняет склад.
+     * @param storeId Идентификатор склада.
+     * @param name Название склада.
+     * @return Результат сохранения.
+     */
+    boolean saveStore(@NonNull String storeId, @NonNull String name);
+
+    boolean canStoreRemoved(@NonNull String storeId);
+
+    boolean removeStore(@NonNull String storeId);
 
     /** Возвращает коллекцию единиц измерения. */
     Observable<RealmResults<UnitModel>> listUnits();

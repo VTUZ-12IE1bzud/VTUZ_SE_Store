@@ -17,6 +17,8 @@
 package ru.annin.store.presentation.ui.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import javax.inject.Inject;
@@ -24,30 +26,30 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ru.annin.store.R;
-import ru.annin.store.presentation.presenter.MainPresenter;
-import ru.annin.store.presentation.ui.view.MainView;
-import ru.annin.store.presentation.ui.viewholder.MainViewHolder;
+import ru.annin.store.presentation.presenter.StorePresenter;
+import ru.annin.store.presentation.ui.view.StoreView;
+import ru.annin.store.presentation.ui.viewholder.StoreViewHolder;
 
 /**
- * Главный экран.
+ * Экран "Склады".
  *
  * @author Pavel Annin.
  */
-public class MainActivity extends BaseActivity implements MainView {
+public class StoreActivity extends BaseActivity implements StoreView {
 
     @Inject
-    MainPresenter mPresenter;
-    @Bind(R.id.drawer_layout)
+    StorePresenter mPresenter;
+    @Bind(R.id.main_container)
     View mainView;
-    private MainViewHolder mViewHolder;
+    private StoreViewHolder mViewHolder;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_store);
         getApplicationComponent().inject(this);
         ButterKnife.bind(this);
-        mViewHolder = new MainViewHolder(this, mainView);
+        mViewHolder = new StoreViewHolder(mainView);
         mPresenter.setViewHolder(mViewHolder);
         mPresenter.setView(this);
         mPresenter.onInitialization();
@@ -74,34 +76,17 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     @Override
-    public void onBackPressed() {
-        if (mPresenter.onBackPress()) {
-            super.onBackPressed();
-        }
+    public void onCreateStoreOpen() {
+        mNavigator.navigate2CreateStore(this);
     }
 
     @Override
-    public void onGitHubOpen() {
-        mNavigator.navigate2GitHub(this);
+    public void onStoreOpen(@NonNull String storeId) {
+        mNavigator.navigate2OpenStore(this, storeId);
     }
 
     @Override
-    public void onCardProductsOpen() {
-        mNavigator.navigate2CardProducts(this);
-    }
-
-    @Override
-    public void onStoresOpen() {
-        mNavigator.navigate2Stores(this);
-    }
-
-    @Override
-    public void onUnitsOpen() {
-        mNavigator.navigate2Units(this);
-    }
-
-    @Override
-    public void onAboutOpen() {
-        mNavigator.navigate2About(this);
+    public void onFinish() {
+        finish();
     }
 }

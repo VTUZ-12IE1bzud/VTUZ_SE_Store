@@ -27,6 +27,7 @@ import javax.inject.Singleton;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import ru.annin.store.data.util.RealmUtil;
+import ru.annin.store.domain.model.StoreModel;
 import ru.annin.store.domain.model.UnitModel;
 import ru.annin.store.domain.repository.DataRepository;
 import rx.Observable;
@@ -46,6 +47,77 @@ public class DataRepositoryImpl implements DataRepository {
     @Inject
     public DataRepositoryImpl() {
         mRealm = RealmUtil.getRealm();
+    }
+
+    @Override
+    public Observable<RealmResults<StoreModel>> listStores() {
+        return mRealm.where(StoreModel.class)
+                .findAllSortedAsync(StoreModel.FIELD_NAME)
+                .asObservable()
+                .filter(RealmResults::isLoaded);
+    }
+
+    @Override
+    public Observable<StoreModel> getStoreById(String storeId) {
+        return mRealm.where(StoreModel.class)
+                .equalTo(UnitModel.FIELD_ID, storeId)
+                .findFirst()
+                .asObservable();
+    }
+
+    @Override
+    public boolean createStore(@NonNull String name) {
+        try {
+            mRealm.beginTransaction();
+            StoreModel store = mRealm.createObject(StoreModel.class);
+            store.setId(UUID.randomUUID().toString());
+            store.setName(name);
+            mRealm.commitTransaction();
+            return true;
+        } catch (RuntimeException e) {
+            Log.e(TAG, "Ошибка: ", e);
+            mRealm.cancelTransaction();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean saveStore(@NonNull String storeId, @NonNull String name) {
+        try {
+            mRealm.beginTransaction();
+            StoreModel store = mRealm.where(StoreModel.class)
+                    .equalTo(StoreModel.FIELD_ID, storeId)
+                    .findFirst();
+            store.setName(name);
+            mRealm.commitTransaction();
+            return true;
+        } catch (RuntimeException e) {
+            Log.e(TAG, "Ошибка: ", e);
+            mRealm.cancelTransaction();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canStoreRemoved(@NonNull String storeId) {
+        return true;
+    }
+
+    @Override
+    public boolean removeStore(@NonNull String storeId) {
+        try {
+            StoreModel store = mRealm.where(StoreModel.class)
+                    .equalTo(StoreModel.FIELD_ID, storeId)
+                    .findFirst();
+            mRealm.beginTransaction();
+            store.removeFromRealm();
+            mRealm.commitTransaction();
+            return true;
+        } catch (RuntimeException e) {
+            Log.e(TAG, "Ошибка: ", e);
+            mRealm.cancelTransaction();
+        }
+        return false;
     }
 
     @Override

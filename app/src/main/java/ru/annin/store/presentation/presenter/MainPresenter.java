@@ -68,7 +68,26 @@ public class MainPresenter extends BasePresenter {
     private final OnClickListener onHolderListener = new OnClickListener() {
         @Override
         public void onGitHubClick() {
+            mViewHolder.hideNavigation();
+            if (mView != null) {
+                mView.onGitHubOpen();
+            }
+        }
 
+        @Override
+        public void onCardProductClick() {
+            mViewHolder.hideNavigation();
+            if (mView != null) {
+                mView.onCardProductsOpen();
+            }
+        }
+
+        @Override
+        public void onStoreClick() {
+            mViewHolder.hideNavigation();
+            if (mView != null) {
+                mView.onStoresOpen();
+            }
         }
 
         @Override

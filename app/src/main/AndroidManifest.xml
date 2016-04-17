@@ -31,6 +31,33 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".presentation.ui.activity.CardProductActivity"
+            android:label="@string/title_activity_card_product"
+            android:theme="@style/Store.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".presentation.ui.activity.StoreActivity"
+            android:label="@string/title_activity_store"
+            android:theme="@style/Store.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".presentation.ui.activity.DetailStoreActivity"
+            android:label="@string/title_activity_store_detail"
+            android:theme="@style/Store.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".presentation.ui.activity.UnitActivity"
             android:label="@string/title_activity_unit"
             android:theme="@style/Store.NoActionBar">

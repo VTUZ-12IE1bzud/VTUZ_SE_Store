@@ -25,8 +25,11 @@ import ru.annin.store.di.module.ApplicationModule;
 import ru.annin.store.domain.repository.DataRepository;
 import ru.annin.store.presentation.ui.activity.AboutActivity;
 import ru.annin.store.presentation.ui.activity.BaseActivity;
+import ru.annin.store.presentation.ui.activity.CardProductActivity;
+import ru.annin.store.presentation.ui.activity.DetailStoreActivity;
 import ru.annin.store.presentation.ui.activity.DetailUnitActivity;
 import ru.annin.store.presentation.ui.activity.MainActivity;
+import ru.annin.store.presentation.ui.activity.StoreActivity;
 import ru.annin.store.presentation.ui.activity.UnitActivity;
 
 /**
@@ -44,6 +47,9 @@ public interface ApplicationComponent {
     void inject(AboutActivity activity);
     void inject(UnitActivity activity);
     void inject(DetailUnitActivity activity);
+    void inject(CardProductActivity activity);
+    void inject(StoreActivity activity);
+    void inject(DetailStoreActivity activity);
 
     Context context();
     DataRepository dataRepository();

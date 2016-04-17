@@ -59,6 +59,7 @@ public class MainViewHolder extends BaseViewHolder {
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         navigation.setNavigationItemSelectedListener(onNavigationClickListener);
+        navigation.getHeaderView(0).findViewById(R.id.ibtn_github).setOnClickListener(onGitHubClickListener);
     }
 
     @Override
@@ -86,9 +87,15 @@ public class MainViewHolder extends BaseViewHolder {
         this.listener = listener;
     }
 
-    private NavigationView.OnNavigationItemSelectedListener onNavigationClickListener = item -> {
+    private final NavigationView.OnNavigationItemSelectedListener onNavigationClickListener = item -> {
         if (listener != null) {
             switch (item.getItemId()) {
+                case R.id.action_nav_card_producat:
+                    listener.onCardProductClick();
+                    return true;
+                case R.id.action_nav_store:
+                    listener.onStoreClick();
+                    return true;
                 case R.id.action_nav_units:
                     listener.onUnitsClick();
                     return true;
@@ -102,8 +109,16 @@ public class MainViewHolder extends BaseViewHolder {
         return false;
     };
 
+    private final View.OnClickListener onGitHubClickListener = v -> {
+        if (listener != null) {
+            listener.onGitHubClick();
+        }
+    };
+
     public interface OnClickListener {
         void onGitHubClick();
+        void onCardProductClick();
+        void onStoreClick();
         void onUnitsClick();
         void onAboutClick();
     }
