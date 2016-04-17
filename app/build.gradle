@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "io.realm:realm-gradle-plugin:0.88.2"
+        classpath "io.realm:realm-gradle-plugin:0.88.3"
         classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
     }
 }
@@ -19,6 +19,15 @@ def versionPatch = 0
 def versionBuild = 0
 
 android {
+
+    signingConfigs {
+        test {
+            keyAlias 'TestReleaseKey'
+            keyPassword 'TestReleaseKey'
+            storeFile file("${rootDir}/TestReleaseKey.jks")
+            storePassword 'TestReleaseKey'
+        }
+    }
 
     compileSdkVersion 23
     buildToolsVersion "24.0.0 rc2"
@@ -37,6 +46,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.test
         }
     }
 
@@ -63,14 +73,34 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+
+    applicationVariants.all { variant ->
+        if (variant.buildType.name.equals("release")) { // Only Release
+            File outDir = file("${rootDir}/out")
+            if (!outDir.exists()) { outDir.mkdirs() }
+            variant.assemble.doLast {
+                variant.outputs.each { output ->
+                    File apkFile = output.outputFile
+                    def abi = output.getFilter(com.android.build.OutputFile.ABI)
+                    if (abi == null) { abi = "universal" }
+                    copy {
+                        from apkFile
+                        into outDir
+                        rename { fileName -> "store_v${variant.versionName}_${abi}.apk" }
+                    }
+                }
+            }
+        }
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+
     // Android Support
-    compile 'com.android.support:design:23.2.1'
-    compile 'com.android.support:support-v4:23.2.1'
-    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:design:23.3.0'
+    compile 'com.android.support:support-v4:23.3.0'
+    compile 'com.android.support:appcompat-v7:23.3.0'
 
     // Dagger
     compile 'com.google.dagger:dagger:2.2'
@@ -79,7 +109,6 @@ dependencies {
     // Rx
     compile 'io.reactivex:rxjava:1.1.2'
     compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
 
     // UI
     compile 'com.jakewharton:butterknife:7.0.1'

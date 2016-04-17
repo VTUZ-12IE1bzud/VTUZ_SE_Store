@@ -1,8 +1,31 @@
 <resources>
     <string name="app_name">Склад</string>
+    <string name="msg_list_empty">Пусто</string>
 
     <!-- Activity Label -->
+    <string name="title_activity_main">@string/app_name</string>
     <string name="title_activity_about">О программе</string>
+    <string name="title_activity_unit">Единицы измерения</string>
+    <string name="title_activity_unit_detail">Единица измерения</string>
+
+    <!-- Nav -->
+    <string name="title_nav_item_unit">@string/title_activity_unit</string>
+    <string name="title_nav_item_about">@string/title_activity_about</string>
+
+    <!-- Main -->
+    <string name="title_nav_drawer_open">Отркыть меню</string>
+    <string name="title_nav_drawer_close">Закрыть меню</string>
+
+    <!-- Unit -->
+    <string name="msg_unit_item_name_format">%1$s (%2$s)</string>
+    <string name="error_unit_used_removed">Удалеине не возможно единица измериня используется</string>
+
+    <!-- Unit Detail -->
+    <string name="msg_unit_name">Название</string>
+    <string name="msg_unit_symbol">Обозначение</string>
+    <string name="msg_unit_description">Описание</string>
+    <string name="action_unit_save">Сохранить</string>
+    <string name="error_unit_field_empty">Заполните поле</string>
 
     <!-- About -->
     <string name="title_app_version_format">Склад\nверсия %1$s (сборка %2$d)</string>
@@ -19,13 +42,8 @@
         \nSee the License for the specific language governing permissions and
         limitations under the License.</string>
     <string name="msg_app_dependencies">При разработке использовались сторонние зависимости:
-        \n    • Realm 0.88.2 (https://github.com/realm/realm-java), Apache 2.0 license;
+        \n    • Realm 0.88.3 (https://github.com/realm/realm-java), Apache 2.0 license;
         \n    • Dagger 2 (https://github.com/google/dagger), Apache 2.0 license;
         \n    • ButterKnife 7.0.1 (https://github.com/JakeWharton/butterknife), Apache 2.0 license;</string>
 
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Settings</string>
 </resources>
