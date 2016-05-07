@@ -26,7 +26,9 @@ import javax.inject.Singleton;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.exceptions.RealmException;
 import ru.annin.store.data.util.RealmUtil;
+import ru.annin.store.domain.model.CardProductModel;
 import ru.annin.store.domain.model.StoreModel;
 import ru.annin.store.domain.model.UnitModel;
 import ru.annin.store.domain.repository.DataRepository;
@@ -47,6 +49,85 @@ public class DataRepositoryImpl implements DataRepository {
     @Inject
     public DataRepositoryImpl() {
         mRealm = RealmUtil.getRealm();
+    }
+
+    @Override
+    public Observable<RealmResults<CardProductModel>> listCardProducts() {
+        return mRealm.where(CardProductModel.class)
+                .findAllSortedAsync(CardProductModel.FIELD_NAME)
+                .asObservable()
+                .filter(RealmResults::isLoaded);
+    }
+
+    @Override
+    public Observable<CardProductModel> getCardProductById(String id) {
+        return mRealm.where(CardProductModel.class)
+                .equalTo(CardProductModel.FIELD_ID, id)
+                .findFirst()
+                .asObservable();
+    }
+
+    @Override
+    public boolean createCardProduct(@NonNull String name, @NonNull String unitId) {
+        try {
+            final UnitModel unit = mRealm.where(UnitModel.class)
+                    .equalTo(UnitModel.FIELD_ID, unitId)
+                    .findFirst();
+            mRealm.beginTransaction();
+            CardProductModel model = mRealm.createObject(CardProductModel.class);
+            model.setId(UUID.randomUUID().toString());
+            model.setName(name);
+            model.setUnit(unit);
+            mRealm.commitTransaction();
+            return true;
+        } catch (RealmException e) {
+            mRealm.cancelTransaction();
+            Log.e(TAG, "Ошибка:", e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean saveCardProduct(@NonNull String id, @NonNull String name, @NonNull String unitId) {
+        try {
+            final UnitModel unit = mRealm.where(UnitModel.class)
+                    .equalTo(UnitModel.FIELD_ID, unitId)
+                    .findFirst();
+            mRealm.beginTransaction();
+            CardProductModel model = mRealm.where(CardProductModel.class)
+                    .equalTo(CardProductModel.FIELD_ID, id)
+                    .findFirst();
+            model.setName(name);
+            model.setUnit(unit);
+            mRealm.commitTransaction();
+            return true;
+        } catch (RealmException e) {
+            mRealm.cancelTransaction();
+            Log.e(TAG, "Ошибка:", e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canCardProductRemoved(@NonNull String id) {
+        return true;
+    }
+
+    @Override
+    public boolean removeCardProduct(@NonNull String storeId) {
+        try {
+            mRealm.beginTransaction();
+            CardProductModel model = mRealm.where(CardProductModel.class)
+                    .equalTo(CardProductModel.FIELD_ID, storeId)
+                    .findFirst();
+            model.deleteFromRealm();
+            mRealm.commitTransaction();
+            return true;
+        } catch (RealmException e) {
+            mRealm.cancelTransaction();
+            Log.e(TAG, "Ошибка:", e);
+        }
+        return false;
     }
 
     @Override
@@ -110,7 +191,7 @@ public class DataRepositoryImpl implements DataRepository {
                     .equalTo(StoreModel.FIELD_ID, storeId)
                     .findFirst();
             mRealm.beginTransaction();
-            store.removeFromRealm();
+            store.deleteFromRealm();
             mRealm.commitTransaction();
             return true;
         } catch (RuntimeException e) {
@@ -175,7 +256,9 @@ public class DataRepositoryImpl implements DataRepository {
 
     @Override
     public boolean canUnitRemoved(@NonNull String unitId) {
-        return true;
+        return mRealm.where(CardProductModel.class)
+                .equalTo(CardProductModel.FIELD_UNIT + "." + UnitModel.FIELD_ID, unitId)
+                .count() == 0;
     }
 
     @Override
@@ -185,7 +268,7 @@ public class DataRepositoryImpl implements DataRepository {
                     .equalTo(UnitModel.FIELD_ID, unitId)
                     .findFirst();
             mRealm.beginTransaction();
-            unit.removeFromRealm();
+            unit.deleteFromRealm();
             mRealm.commitTransaction();
             return true;
         } catch (RuntimeException e) {

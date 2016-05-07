@@ -26,6 +26,7 @@ import javax.inject.Singleton;
 
 import ru.annin.store.presentation.ui.activity.AboutActivity;
 import ru.annin.store.presentation.ui.activity.CardProductActivity;
+import ru.annin.store.presentation.ui.activity.DetailCardProductActivity;
 import ru.annin.store.presentation.ui.activity.DetailStoreActivity;
 import ru.annin.store.presentation.ui.activity.DetailUnitActivity;
 import ru.annin.store.presentation.ui.activity.MainActivity;
@@ -59,6 +60,18 @@ public class Navigator {
 
     public void navigate2CardProducts(@NonNull Context ctx) {
         final Intent intent = new Intent(ctx, CardProductActivity.class);
+        ctx.startActivity(intent);
+    }
+
+    public void navigate2CreateCardProduct(@NonNull Context ctx) {
+        final Intent intent = new Intent(ctx, DetailCardProductActivity.class);
+        ctx.startActivity(intent);
+    }
+
+    public void navigate2OpenCardProduct(@NonNull Context ctx, @NonNull String cardProductId) {
+        final Intent intent = new Intent(ctx, DetailCardProductActivity.class);
+        intent.setAction(Intent.ACTION_EDIT);
+        intent.putExtra(DetailCardProductActivity.EXTRA_CARD_PRODUCT_ID, cardProductId);
         ctx.startActivity(intent);
     }
 

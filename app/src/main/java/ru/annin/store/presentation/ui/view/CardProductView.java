@@ -14,29 +14,19 @@
  * limitations under the License.
  */
 
-package ru.annin.store.domain.interactor;
+package ru.annin.store.presentation.ui.view;
 
-import javax.inject.Inject;
-
-import ru.annin.store.domain.repository.DataRepository;
-import rx.Observable;
+import android.support.annotation.NonNull;
 
 /**
+ * Представление экрана "Карточки товаров".
+ *
  * @author Pavel Annin.
  */
-public class GetUnits extends UseCase {
+public interface CardProductView {
 
-    // Repository
-    DataRepository mRepository;
+    void onCreateCardProductOpen();
+    void onCardProductOpen(@NonNull String id);
+    void onFinish();
 
-    @Inject
-    protected GetUnits(DataRepository dataRepository) {
-        super();
-        mRepository = dataRepository;
-    }
-
-    @Override
-    protected Observable buildUseCaseObservable() {
-        return mRepository.listUnits();
-    }
 }

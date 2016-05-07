@@ -23,50 +23,70 @@ import javax.inject.Inject;
 import ru.annin.store.R;
 import ru.annin.store.domain.repository.DataRepository;
 import ru.annin.store.presentation.common.BasePresenter;
-import ru.annin.store.presentation.ui.view.DetailUnitView;
-import ru.annin.store.presentation.ui.viewholder.DetailUnitViewHolder;
+import ru.annin.store.presentation.ui.view.DetailCardProductView;
+import ru.annin.store.presentation.ui.viewholder.DetailCardProductViewHolder;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * Presenter экрана единица измерения.
+ * Presenter экрана "Карточка товара".
  *
  * @author Pavel Annin.
  */
-public class DetailUnitPresenter extends BasePresenter {
+public class DetailCardProductPresenter extends BasePresenter {
 
-    private DetailUnitViewHolder mViewHolder;
-    private DetailUnitView mView;
+    private DetailCardProductViewHolder mViewHolder;
+    private DetailCardProductView mView;
     private CompositeSubscription mSubscription;
 
     private final DataRepository dataRepository;
 
     private boolean isCreated;
+    private String cardProductId;
     private String unitId;
 
     @Inject
-    public DetailUnitPresenter(DataRepository dataRepository) {
+    public DetailCardProductPresenter(DataRepository dataRepository) {
         this.dataRepository = dataRepository;
         mSubscription = new CompositeSubscription();
     }
 
     public void onInitialization() {
         isCreated = true;
-    }
-
-    public void onInitialization(String unitId) {
-        isCreated = false;
-        final Subscription sub = dataRepository.getUnitById(unitId)
+        final Subscription subUnits = dataRepository.listUnits()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
-                    this.unitId = model.getId();
+                    if (mViewHolder != null) {
+                        mViewHolder.showUnits(model);
+                    }
+                });
+        mSubscription.add(subUnits);
+    }
+
+    public void onInitialization(String cardProductId) {
+        isCreated = false;
+        final Subscription subCardProduct = dataRepository.getCardProductById(cardProductId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(model -> {
+                    this.cardProductId = model.getId();
+                    this.unitId = model.getUnit().getId();
                     if (mViewHolder != null) {
                         mViewHolder.showName(model.getName())
-                                .showSymbol(model.getSymbol())
-                                .showDescription(model.getDescription());
-                    }});
-        mSubscription.add(sub);
+                                .selectUnit(unitId);
+                    }
+                });
+        mSubscription.add(subCardProduct);
+
+        final Subscription subUnits = dataRepository.listUnits()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(model -> {
+                    if (mViewHolder != null) {
+                        mViewHolder.showUnits(model)
+                                .selectUnit(unitId);
+                    }
+                });
+        mSubscription.add(subUnits);
     }
 
     @Override
@@ -75,18 +95,18 @@ public class DetailUnitPresenter extends BasePresenter {
         mSubscription.unsubscribe();
     }
 
-    public void setViewHolder(DetailUnitViewHolder viewHolder) {
+    public void setViewHolder(DetailCardProductViewHolder viewHolder) {
         mViewHolder = viewHolder;
         if (mViewHolder != null) {
             mViewHolder.setOnClickListener(onHolderListener);
         }
     }
 
-    public void setView(DetailUnitView view) {
+    public void setView(DetailCardProductView view) {
         mView = view;
     }
 
-    private boolean isValidation(String name, String symbol, String description) {
+    private boolean isValidation(String name, String unitId) {
         boolean isValidation = true;
 
         String msgEmpty = "";
@@ -95,9 +115,7 @@ public class DetailUnitPresenter extends BasePresenter {
         }
 
         if (mViewHolder != null) {
-            mViewHolder.errorName(null)
-                    .errorSymbol(null)
-                    .errorDescription(null);
+            mViewHolder.errorName(null);
         }
 
         if (TextUtils.isEmpty(name)) {
@@ -107,24 +125,14 @@ public class DetailUnitPresenter extends BasePresenter {
             }
         }
 
-        if (TextUtils.isEmpty(symbol)) {
+        if (TextUtils.isEmpty(unitId)) {
             isValidation = false;
-            if (mViewHolder != null) {
-                mViewHolder.errorSymbol(msgEmpty);
-            }
-        }
-
-        if (TextUtils.isEmpty(description)) {
-            isValidation = false;
-            if (mViewHolder != null) {
-                mViewHolder.errorDescription(msgEmpty);
-            }
         }
 
         return isValidation;
     }
 
-    private final DetailUnitViewHolder.OnClickListener onHolderListener = new DetailUnitViewHolder.OnClickListener() {
+    private final DetailCardProductViewHolder.OnClickListener onHolderListener = new DetailCardProductViewHolder.OnClickListener() {
         @Override
         public void onNavigationBackClick() {
             if (mView != null) {
@@ -133,11 +141,11 @@ public class DetailUnitPresenter extends BasePresenter {
         }
 
         @Override
-        public void onSaveClick(String name, String symbol, String description) {
-            if (isValidation(name, symbol, description)) {
+        public void onSaveClick(String name, String unitId) {
+            if (isValidation(name, unitId)) {
                 final boolean result = isCreated
-                        ? dataRepository.createUnit(name, symbol, description)
-                        : dataRepository.saveUnit(unitId, name, symbol, description);
+                        ? dataRepository.createCardProduct(name, unitId)
+                        : dataRepository.saveCardProduct(cardProductId, name, unitId);
                 if (result) {
                     if (mView != null) {
                         mView.onFinish();

@@ -13,24 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.annin.store.domain.interactor;
 
-import rx.Subscriber;
+package ru.annin.store.presentation.ui.view;
 
-public class DefaultSubscriber<T> extends Subscriber<T> {
+import android.support.annotation.StringRes;
 
-    @Override
-    public void onCompleted() {
-        // Empty
-    }
+/**
+ * Представление экрана "Карточка товара".
+ *
+ * @author Pavel Annin.
+ */
+public interface DetailCardProductView {
 
-    @Override
-    public void onError(Throwable e) {
-        // Empty
-    }
+    void onFinish();
 
-    @Override
-    public void onNext(T t) {
-        // Empty
-    }
+    String getString(@StringRes int resId);
 }

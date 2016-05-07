@@ -7,7 +7,8 @@
     <string name="title_activity_about">О программе</string>
     <string name="title_activity_unit">Единицы измерения</string>
     <string name="title_activity_unit_detail">Единица измерения</string>
-    <string name="title_activity_card_product">Карточка товара</string>
+    <string name="title_activity_card_product">Карточка товаров</string>
+    <string name="title_activity_card_product_detail">Карточка товара</string>
     <string name="title_activity_store">Склады</string>
     <string name="title_activity_store_detail">Склад</string>
 
@@ -20,6 +21,17 @@
     <!-- Main -->
     <string name="title_nav_drawer_open">Отркыть меню</string>
     <string name="title_nav_drawer_close">Закрыть меню</string>
+
+    <!-- CardProduct -->
+    <string name="error_card_product_used_removed">Удалеине не возможно, карточка товара используется</string>
+
+    <!-- CardProduct Detail -->
+    <string name="msg_card_product_name">Название</string>
+    <string name="msg_card_product_unit">Единица измерения</string>
+    <string name="action_card_product_save">Сохранить</string>
+    <string name="error_card_product_field_empty">Заполните поле</string>
+    <string name="error_card_product_unit_empty">Не создано не одной единицы измерения</string>
+    <string name="msg_unit_list_item_name_format">%1$s (%2$s)</string>
 
     <!-- Store -->
     <string name="error_store_used_removed">Удалеине не возможно, склад используется</string>
@@ -55,7 +67,7 @@
         \nSee the License for the specific language governing permissions and
         limitations under the License.</string>
     <string name="msg_app_dependencies">При разработке использовались сторонние зависимости:
-        \n    • Realm 0.88.3 (https://github.com/realm/realm-java), Apache 2.0 license;
+        \n    • Realm 0.90.0 (https://github.com/realm/realm-java), Apache 2.0 license;
         \n    • Dagger 2 (https://github.com/google/dagger), Apache 2.0 license;
         \n    • ButterKnife 7.0.1 (https://github.com/JakeWharton/butterknife), Apache 2.0 license;</string>
 

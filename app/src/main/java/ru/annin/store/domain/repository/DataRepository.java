@@ -19,6 +19,7 @@ package ru.annin.store.domain.repository;
 import android.support.annotation.NonNull;
 
 import io.realm.RealmResults;
+import ru.annin.store.domain.model.CardProductModel;
 import ru.annin.store.domain.model.StoreModel;
 import ru.annin.store.domain.model.UnitModel;
 import rx.Observable;
@@ -29,6 +30,32 @@ import rx.Observable;
  * @author Pavel Annin.
  */
 public interface DataRepository {
+
+    /** Возвращает коллекцию карточек товаров. */
+    Observable<RealmResults<CardProductModel>> listCardProducts();
+
+    Observable<CardProductModel> getCardProductById(String id);
+
+    /**
+     * Создает новую карточку товара.
+     * @param name Название товара.
+     * @param unitId Идентификатор единицы измерения.
+     * @return Результат создания.
+     */
+    boolean createCardProduct(@NonNull String name, @NonNull String unitId);
+
+    /**
+     * Сохраняет карточку товара.
+     * @param id Идентификатор.
+     * @param name Название товара.
+     * @param unitId Идентификатор единицы измерения.
+     * @return Результат сохранения.
+     */
+    boolean saveCardProduct(@NonNull String id, @NonNull String name, @NonNull String unitId);
+
+    boolean canCardProductRemoved(@NonNull String id);
+
+    boolean removeCardProduct(@NonNull String storeId);
 
     /** Возвращает коллекцию складов. */
     Observable<RealmResults<StoreModel>> listStores();

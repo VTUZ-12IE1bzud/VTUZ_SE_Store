@@ -33,45 +33,45 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.realm.RealmResults;
 import ru.annin.store.R;
-import ru.annin.store.domain.model.UnitModel;
+import ru.annin.store.domain.model.CardProductModel;
 import ru.annin.store.presentation.common.BaseViewHolder;
-import ru.annin.store.presentation.ui.adapter.UnitAdapter;
+import ru.annin.store.presentation.ui.adapter.CardProductAdapter;
 
 /**
- * ViewHolder экрана "Единицы измерения".
+ * ViewHolder экрана "Карточки товаров".
  *
  * @author Pavel Annin.
  */
-public class UnitViewHolder extends BaseViewHolder {
+public class CardProductViewHolder extends BaseViewHolder {
 
     // View's
     @Bind(R.id.main_container)
     View mainView;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.list_unit)
-    RecyclerView listUnit;
+    @Bind(R.id.list_card_product)
+    RecyclerView listCardProduct;
     @Bind(R.id.txt_empty)
     TextView txtEmpty;
 
     // Adapter's
-    private final UnitAdapter adapter;
+    private final CardProductAdapter adapter;
 
     // Listener's
     private OnClickListener listener;
     private ItemTouchHelper itemTouchHelper;
 
-    public UnitViewHolder(@NonNull View view) {
+    public CardProductViewHolder(@NonNull View view) {
         super(view);
         ButterKnife.bind(this, view);
         // Setup
-        adapter = new UnitAdapter(true);
+        adapter = new CardProductAdapter(true);
         itemTouchHelper = new ItemTouchHelper(onItemTouchHelper);
         toolbar.setNavigationOnClickListener(onNavigationClickListener);
         adapter.setViewEmpty(txtEmpty);
-        listUnit.setItemAnimator(new DefaultItemAnimator());
-        listUnit.setAdapter(adapter);
-        itemTouchHelper.attachToRecyclerView(listUnit);
+        listCardProduct.setItemAnimator(new DefaultItemAnimator());
+        listCardProduct.setAdapter(adapter);
+        itemTouchHelper.attachToRecyclerView(listCardProduct);
         adapter.setOnClickListener(onItemClickListener);
     }
 
@@ -81,17 +81,17 @@ public class UnitViewHolder extends BaseViewHolder {
         ButterKnife.unbind(this);
     }
 
-    public UnitViewHolder showUnits(final RealmResults<UnitModel> units) {
-        adapter.updateRealmResults(units);
+    public CardProductViewHolder showCardProducts(final RealmResults<CardProductModel> data) {
+        adapter.updateRealmResults(data);
         return this;
     }
 
-    public UnitViewHolder insertItem(int position) {
+    public CardProductViewHolder insertItem(int position) {
         adapter.notifyItemInserted(position);
         return this;
     }
 
-    public UnitViewHolder showMessage(@StringRes int text) {
+    public CardProductViewHolder showMessage(@StringRes int text) {
         Snackbar.make(mainView, text, Snackbar.LENGTH_LONG).show();
         return this;
     }
@@ -103,7 +103,7 @@ public class UnitViewHolder extends BaseViewHolder {
     @OnClick(R.id.fab_add)
     void onCreateClick() {
         if (listener != null) {
-            listener.onCreateUnitClick();
+            listener.onCreateClick();
         }
 
     }
@@ -147,16 +147,16 @@ public class UnitViewHolder extends BaseViewHolder {
         }
     };
 
-    private final UnitAdapter.OnClickListener onItemClickListener = model -> {
+    private final CardProductAdapter.OnClickListener onItemClickListener = model -> {
         if (listener != null) {
             listener.onItemClick(model);
         }
     };
 
     public interface OnClickListener {
-        void onCreateUnitClick();
-        void onRemoveItem(UnitModel unit, int position);
-        void onItemClick(UnitModel unit);
+        void onCreateClick();
+        void onRemoveItem(CardProductModel model, int position);
+        void onItemClick(CardProductModel model);
         void onNavBackClick();
     }
 }

@@ -83,8 +83,9 @@ public abstract class RealmRecyclerAdapter <TRealm extends RealmObject,
     }
 
     private final class ChangeListener implements RealmChangeListener {
+
         @Override
-        public void onChange() {
+        public void onChange(Object element) {
             notifyDataSetChanged();
             notifyEmptyChanged();
         }

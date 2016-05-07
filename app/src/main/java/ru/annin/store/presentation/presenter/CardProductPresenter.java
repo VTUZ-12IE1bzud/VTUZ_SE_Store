@@ -19,84 +19,82 @@ package ru.annin.store.presentation.presenter;
 import javax.inject.Inject;
 
 import ru.annin.store.R;
-import ru.annin.store.domain.model.UnitModel;
+import ru.annin.store.domain.model.CardProductModel;
 import ru.annin.store.domain.repository.DataRepository;
 import ru.annin.store.presentation.common.BasePresenter;
-import ru.annin.store.presentation.ui.view.UnitView;
-import ru.annin.store.presentation.ui.viewholder.UnitViewHolder;
+import ru.annin.store.presentation.ui.view.CardProductView;
+import ru.annin.store.presentation.ui.viewholder.CardProductViewHolder;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * Presenter экрана "Единицы измерения".
+ * Presenter экрана "Карточки товаров".
  *
  * @author Pavel Annin.
  */
-public class UnitPresenter extends BasePresenter {
+public class CardProductPresenter extends BasePresenter {
 
-    private UnitViewHolder mViewHolder;
-    private UnitView mView;
+    private CardProductViewHolder mViewHolder;
+    private CardProductView mView;
 
     private final DataRepository dataRepository;
-    private final CompositeSubscription mSubscription;
+    private final CompositeSubscription subscriptions;
 
     @Inject
-    public UnitPresenter(DataRepository dataRepository){
+    public CardProductPresenter(DataRepository dataRepository){
         this.dataRepository = dataRepository;
-        mSubscription = new CompositeSubscription();
+        subscriptions = new CompositeSubscription();
     }
 
     public void onInitialization() {
-        final Subscription sub = dataRepository.listUnits()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(unitModels -> {
+        final Subscription subscription = dataRepository.listCardProducts()
+                .subscribe(storeModels -> {
                     if (mViewHolder != null) {
-                        mViewHolder.showUnits(unitModels);
+                        mViewHolder.showCardProducts(storeModels);
                     }
                 });
-        mSubscription.add(sub);
+        subscriptions.add(subscription);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mSubscription.unsubscribe();
+        subscriptions.unsubscribe();
     }
 
-    public void setViewHolder(UnitViewHolder viewHolder) {
+    public void setViewHolder(CardProductViewHolder viewHolder) {
         mViewHolder = viewHolder;
         if (mViewHolder != null) {
             mViewHolder.setOnClickListener(onViewHolderClickListener);
         }
     }
 
-    public void setView(UnitView view) {
+    public void setView(CardProductView view) {
         mView = view;
     }
 
-    private final UnitViewHolder.OnClickListener onViewHolderClickListener = new UnitViewHolder.OnClickListener() {
-        @Override
-        public void onCreateUnitClick() {
+    private final CardProductViewHolder.OnClickListener onViewHolderClickListener = new CardProductViewHolder.OnClickListener() {
+           @Override
+        public void onCreateClick() {
             if (mView != null) {
-                mView.onCreateUnitOpen();
+                mView.onCreateCardProductOpen();
             }
         }
 
         @Override
-        public void onRemoveItem(UnitModel unit, int position) {
-            if (dataRepository.canUnitRemoved(unit.getId())) {
-                dataRepository.removeUnit(unit.getId());
+        public void onRemoveItem(CardProductModel model, int position) {
+            if (dataRepository.canCardProductRemoved(model.getId())) {
+                dataRepository.removeCardProduct(model.getId());
             } else {
                 mViewHolder.insertItem(position)
-                        .showMessage(R.string.error_unit_used_removed);
+                        .showMessage(R.string.error_card_product_used_removed);
             }
         }
 
         @Override
-        public void onItemClick(UnitModel unit) {
+        public void onItemClick(CardProductModel model) {
             if (mView != null) {
-                mView.onUnitOpen(unit.getId());
+                mView.onCardProductOpen(model.getId());
             }
         }
 

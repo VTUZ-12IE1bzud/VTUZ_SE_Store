@@ -28,11 +28,15 @@ import io.realm.annotations.RealmClass;
 @RealmClass
 public class CardProductModel extends RealmObject {
 
+    public static final String FIELD_ID = "id";
+    public static final String FIELD_NAME = "name";
+    public static final String FIELD_UNIT = "unit";
+
     @PrimaryKey
     private String id;
-    private ProductModel product;
+    private String name;
     private UnitModel unit;
-    private StoreModel store;
+
 
     public CardProductModel() {
         // Empty.
@@ -46,12 +50,12 @@ public class CardProductModel extends RealmObject {
         this.id = id;
     }
 
-    public ProductModel getProduct() {
-        return product;
+    public String getName() {
+        return name;
     }
 
-    public void setProduct(ProductModel product) {
-        this.product = product;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public UnitModel getUnit() {
@@ -60,13 +64,5 @@ public class CardProductModel extends RealmObject {
 
     public void setUnit(UnitModel unit) {
         this.unit = unit;
-    }
-
-    public StoreModel getStore() {
-        return store;
-    }
-
-    public void setStore(StoreModel store) {
-        this.store = store;
     }
 }

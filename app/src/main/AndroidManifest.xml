@@ -40,6 +40,15 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".presentation.ui.activity.DetailCardProductActivity"
+            android:label="@string/title_activity_card_product_detail"
+            android:theme="@style/Store.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".presentation.ui.activity.StoreActivity"
             android:label="@string/title_activity_store"
             android:theme="@style/Store.NoActionBar">

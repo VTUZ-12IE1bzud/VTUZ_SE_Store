@@ -7,7 +7,9 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical"
+    android:minHeight="?android:attr/listPreferredItemHeight"
     android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:gravity="center_vertical"
     android:paddingRight="@dimen/activity_horizontal_margin">
 
     <TextView
