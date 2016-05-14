@@ -17,6 +17,7 @@
 package ru.annin.store.presentation.ui.activity;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import javax.inject.Inject;
@@ -24,30 +25,30 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ru.annin.store.R;
-import ru.annin.store.presentation.presenter.MainPresenter;
-import ru.annin.store.presentation.ui.view.MainView;
-import ru.annin.store.presentation.ui.viewholder.MainViewHolder;
+import ru.annin.store.presentation.presenter.ReceiptProductInvoicePresenter;
+import ru.annin.store.presentation.ui.view.ReceiptProductInvoiceView;
+import ru.annin.store.presentation.ui.viewholder.ReceiptProductInvoiceViewHolder;
 
 /**
- * Главный экран.
+ * Экран "Товарная накладная"
  *
  * @author Pavel Annin.
  */
-public class MainActivity extends BaseActivity implements MainView {
+public class ReceiptProductInvoiceActivity extends BaseActivity implements ReceiptProductInvoiceView {
 
     @Inject
-    MainPresenter mPresenter;
-    @Bind(R.id.drawer_layout)
+    ReceiptProductInvoicePresenter mPresenter;
+    @Bind(R.id.main_container)
     View mainView;
-    private MainViewHolder mViewHolder;
+    private ReceiptProductInvoiceViewHolder mViewHolder;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_receipt_product_invoice);
         getApplicationComponent().inject(this);
         ButterKnife.bind(this);
-        mViewHolder = new MainViewHolder(this, mainView);
+        mViewHolder = new ReceiptProductInvoiceViewHolder(mainView);
         mPresenter.setViewHolder(mViewHolder);
         mPresenter.setView(this);
         mPresenter.onInitialization();
@@ -74,39 +75,17 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     @Override
-    public void onBackPressed() {
-        if (mPresenter.onBackPress()) {
-            super.onBackPressed();
-        }
+    public void onCreateReceiptProductInvoiceOpen() {
+        mNavigator.navigate2CreateReceiptProductInvoice(this);
     }
 
     @Override
-    public void onGitHubOpen() {
-        mNavigator.navigate2GitHub(this);
+    public void onReceiptProductInvoiceOpen(String id) {
+        mNavigator.navigate2OpenReceiptProductInvoice(this, id);
     }
 
     @Override
-    public void onReceiptProductInvoiceOpen() {
-        mNavigator.navigate2ReceiptProductInvoice(this);
-    }
-
-    @Override
-    public void onCardProductsOpen() {
-        mNavigator.navigate2CardProducts(this);
-    }
-
-    @Override
-    public void onStoresOpen() {
-        mNavigator.navigate2Stores(this);
-    }
-
-    @Override
-    public void onUnitsOpen() {
-        mNavigator.navigate2Units(this);
-    }
-
-    @Override
-    public void onAboutOpen() {
-        mNavigator.navigate2About(this);
+    public void onFinish() {
+        finish();
     }
 }

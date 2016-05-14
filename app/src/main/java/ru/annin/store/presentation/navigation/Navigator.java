@@ -30,6 +30,7 @@ import ru.annin.store.presentation.ui.activity.DetailCardProductActivity;
 import ru.annin.store.presentation.ui.activity.DetailStoreActivity;
 import ru.annin.store.presentation.ui.activity.DetailUnitActivity;
 import ru.annin.store.presentation.ui.activity.MainActivity;
+import ru.annin.store.presentation.ui.activity.ReceiptProductInvoiceActivity;
 import ru.annin.store.presentation.ui.activity.StoreActivity;
 import ru.annin.store.presentation.ui.activity.UnitActivity;
 
@@ -55,6 +56,23 @@ public class Navigator {
         final String url = "https://github.com/anninpavel/VTUZ_SoftwareEngineering_Store";
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(url));
+        ctx.startActivity(intent);
+    }
+
+    public void navigate2ReceiptProductInvoice(@NonNull Context ctx) {
+        final Intent intent = new Intent(ctx, ReceiptProductInvoiceActivity.class);
+        ctx.startActivity(intent);
+    }
+
+    public void navigate2CreateReceiptProductInvoice(@NonNull Context ctx) {
+        final Intent intent = new Intent(ctx, .class);
+        ctx.startActivity(intent);
+    }
+
+    public void navigate2OpenReceiptProductInvoice(@NonNull Context ctx, @NonNull String receiptProductInvoiceId) {
+        final Intent intent = new Intent(ctx, .class);
+        intent.setAction(Intent.ACTION_EDIT);
+        intent.putExtra(.EXTRA_CARD_PRODUCT_ID, receiptProductInvoiceId);
         ctx.startActivity(intent);
     }
 

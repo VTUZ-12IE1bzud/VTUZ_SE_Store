@@ -17,16 +17,14 @@
 package ru.annin.store.presentation.ui.view;
 
 /**
- * View главного экрана.
+ * Представление экрана "Товарная накладная".
  *
  * @author Pavel Annin.
  */
-public interface MainView {
+public interface ReceiptProductInvoiceView {
 
-    void onGitHubOpen();
-    void onReceiptProductInvoiceOpen();
-    void onCardProductsOpen();
-    void onStoresOpen();
-    void onUnitsOpen();
-    void onAboutOpen();
+    void onCreateReceiptProductInvoiceOpen();
+    void onReceiptProductInvoiceOpen(String id);
+    void onFinish();
+
 }

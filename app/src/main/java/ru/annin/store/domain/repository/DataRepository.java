@@ -20,6 +20,7 @@ import android.support.annotation.NonNull;
 
 import io.realm.RealmResults;
 import ru.annin.store.domain.model.CardProductModel;
+import ru.annin.store.domain.model.ReceiptProductInvoiceModel;
 import ru.annin.store.domain.model.StoreModel;
 import ru.annin.store.domain.model.UnitModel;
 import rx.Observable;
@@ -30,6 +31,18 @@ import rx.Observable;
  * @author Pavel Annin.
  */
 public interface DataRepository {
+
+    Observable<RealmResults<ReceiptProductInvoiceModel>> listReceiptProductInvoice();
+
+    Observable<CardProductModel> getReceiptProductInvoiceById(String id);
+
+//    boolean createReceiptProductInvoice(@NonNull String name, @NonNull String unitId);
+
+//    boolean saveReceiptProductInvoice(@NonNull String id, @NonNull String name, @NonNull String unitId);
+
+    boolean canReceiptProductInvoiceRemoved(@NonNull String id);
+
+    boolean removeReceiptProductInvoice(@NonNull String id);
 
     /** Возвращает коллекцию карточек товаров. */
     Observable<RealmResults<CardProductModel>> listCardProducts();

@@ -32,7 +32,9 @@ public class ReceiptProductInvoiceModel extends RealmObject {
 
     @PrimaryKey
     private String id;
+    private String name;
     private CardProductModel cardProduct;
+    private StoreModel store;
     private Date date;
     private float price;
     private float amount;
@@ -49,12 +51,28 @@ public class ReceiptProductInvoiceModel extends RealmObject {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public CardProductModel getCardProduct() {
         return cardProduct;
     }
 
     public void setCardProduct(CardProductModel cardProduct) {
         this.cardProduct = cardProduct;
+    }
+
+    public StoreModel getStore() {
+        return store;
+    }
+
+    public void setStore(StoreModel store) {
+        this.store = store;
     }
 
     public Date getDate() {

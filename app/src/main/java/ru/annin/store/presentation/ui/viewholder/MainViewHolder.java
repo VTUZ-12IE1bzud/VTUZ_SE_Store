@@ -90,6 +90,9 @@ public class MainViewHolder extends BaseViewHolder {
     private final NavigationView.OnNavigationItemSelectedListener onNavigationClickListener = item -> {
         if (listener != null) {
             switch (item.getItemId()) {
+                case R.id.action_nav_receipt_product_invoice:
+                    listener.onReceiptProductInvoiceClick();
+                    return true;
                 case R.id.action_nav_card_producat:
                     listener.onCardProductClick();
                     return true;
@@ -117,6 +120,7 @@ public class MainViewHolder extends BaseViewHolder {
 
     public interface OnClickListener {
         void onGitHubClick();
+        void onReceiptProductInvoiceClick();
         void onCardProductClick();
         void onStoreClick();
         void onUnitsClick();

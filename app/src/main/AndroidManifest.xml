@@ -22,7 +22,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.ui.activity.MainActivity"
+        <activity
+            android:name=".presentation.ui.activity.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/Store.NoActionBar">
             <intent-filter>
@@ -31,7 +32,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.ui.activity.CardProductActivity"
+        <activity
+            android:name=".presentation.ui.activity.CardProductActivity"
             android:label="@string/title_activity_card_product"
             android:theme="@style/Store.NoActionBar">
             <intent-filter>
@@ -40,7 +42,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.ui.activity.DetailCardProductActivity"
+        <activity
+            android:name=".presentation.ui.activity.DetailCardProductActivity"
             android:label="@string/title_activity_card_product_detail"
             android:theme="@style/Store.NoActionBar">
             <intent-filter>
@@ -49,7 +52,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.ui.activity.StoreActivity"
+        <activity
+            android:name=".presentation.ui.activity.StoreActivity"
             android:label="@string/title_activity_store"
             android:theme="@style/Store.NoActionBar">
             <intent-filter>
@@ -58,7 +62,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.ui.activity.DetailStoreActivity"
+        <activity
+            android:name=".presentation.ui.activity.DetailStoreActivity"
             android:label="@string/title_activity_store_detail"
             android:theme="@style/Store.NoActionBar">
             <intent-filter>
@@ -67,7 +72,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.ui.activity.UnitActivity"
+        <activity
+            android:name=".presentation.ui.activity.UnitActivity"
             android:label="@string/title_activity_unit"
             android:theme="@style/Store.NoActionBar">
             <intent-filter>
@@ -76,7 +82,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.ui.activity.DetailUnitActivity"
+        <activity
+            android:name=".presentation.ui.activity.DetailUnitActivity"
             android:label="@string/title_activity_unit_detail"
             android:theme="@style/Store.NoActionBar">
             <intent-filter>
@@ -85,8 +92,19 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.ui.activity.AboutActivity"
+        <activity
+            android:name=".presentation.ui.activity.AboutActivity"
             android:label="@string/title_nav_item_about"
+            android:theme="@style/Store.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".presentation.ui.activity.ReceiptProductInvoiceActivity"
+            android:label="@string/title_activity_receipt_product_invoice"
             android:theme="@style/Store.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

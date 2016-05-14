@@ -75,6 +75,14 @@ public class MainPresenter extends BasePresenter {
         }
 
         @Override
+        public void onReceiptProductInvoiceClick() {
+            mViewHolder.hideNavigation();
+            if (mView != null) {
+                mView.onReceiptProductInvoiceOpen();
+            }
+        }
+
+        @Override
         public void onCardProductClick() {
             mViewHolder.hideNavigation();
             if (mView != null) {

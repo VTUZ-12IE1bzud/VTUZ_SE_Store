@@ -2,7 +2,21 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="none">
+    <group
+        android:id="@+id/group_nav_invoice"
+        android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/action_nav_receipt_product_invoice"
+            android:icon="@drawable/ic_invoice"
+            android:title="@string/title_nav_item_receipt_product_invoice" />
+
+    </group>
+
+    <group
+        android:id="@+id/group_nav_directory"
+        android:checkableBehavior="none">
+
         <item
             android:id="@+id/action_nav_card_producat"
             android:icon="@drawable/ic_book"
@@ -17,13 +31,12 @@
             android:id="@+id/action_nav_units"
             android:icon="@drawable/ic_book"
             android:title="@string/title_nav_item_unit" />
+
     </group>
 
-    <group android:checkableBehavior="none">
-        <item
-            android:id="@+id/action_nav_about"
-            android:icon="@drawable/ic_about"
-            android:title="@string/title_nav_item_about" />
-    </group>
+    <item
+        android:id="@+id/action_nav_about"
+        android:icon="@drawable/ic_about"
+        android:title="@string/title_nav_item_about" />
 
 </menu>

@@ -11,12 +11,14 @@
     <string name="title_activity_card_product_detail">Карточка товара</string>
     <string name="title_activity_store">Склады</string>
     <string name="title_activity_store_detail">Склад</string>
+    <string name="title_activity_receipt_product_invoice">Товарные накладные</string>
 
     <!-- Nav -->
     <string name="title_nav_item_unit">@string/title_activity_unit</string>
     <string name="title_nav_item_card_product">@string/title_activity_card_product</string>
     <string name="title_nav_item_store">@string/title_activity_store</string>
     <string name="title_nav_item_about">@string/title_activity_about</string>
+    <string name="title_nav_item_receipt_product_invoice">@string/title_activity_receipt_product_invoice</string>
 
     <!-- Main -->
     <string name="title_nav_drawer_open">Отркыть меню</string>
@@ -51,6 +53,11 @@
     <string name="msg_unit_description">Описание</string>
     <string name="action_unit_save">Сохранить</string>
     <string name="error_unit_field_empty">Заполните поле</string>
+
+    <!-- Receipt Product Invoice  -->
+    <string name="msg_receipt_product_invoice_amount_format">%1$f %2$s</string>
+    <string name="msg_receipt_product_invoice_price_format">%1$f р</string>
+    <string name="msg_receipt_product_invoice_sum_format">%1$f р</string>
 
     <!-- About -->
     <string name="title_app_version_format">Склад\nверсия %1$s (сборка %2$d)</string>

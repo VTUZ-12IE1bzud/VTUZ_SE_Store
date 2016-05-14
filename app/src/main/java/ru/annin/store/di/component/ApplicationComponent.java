@@ -30,6 +30,7 @@ import ru.annin.store.presentation.ui.activity.DetailCardProductActivity;
 import ru.annin.store.presentation.ui.activity.DetailStoreActivity;
 import ru.annin.store.presentation.ui.activity.DetailUnitActivity;
 import ru.annin.store.presentation.ui.activity.MainActivity;
+import ru.annin.store.presentation.ui.activity.ReceiptProductInvoiceActivity;
 import ru.annin.store.presentation.ui.activity.StoreActivity;
 import ru.annin.store.presentation.ui.activity.UnitActivity;
 
@@ -51,6 +52,7 @@ public interface ApplicationComponent {
     void inject(DetailCardProductActivity activity);
     void inject(StoreActivity activity);
     void inject(DetailStoreActivity activity);
+    void inject(ReceiptProductInvoiceActivity activity);
 
     Context context();
     DataRepository dataRepository();
