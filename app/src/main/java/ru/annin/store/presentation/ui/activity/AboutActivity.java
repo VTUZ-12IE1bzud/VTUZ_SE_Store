@@ -18,60 +18,29 @@ package ru.annin.store.presentation.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
 
-import javax.inject.Inject;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import ru.annin.store.R;
+import ru.annin.store.presentation.common.BaseActivity;
 import ru.annin.store.presentation.presenter.AboutPresenter;
 import ru.annin.store.presentation.ui.view.AboutView;
 import ru.annin.store.presentation.ui.viewholder.AboutViewHolder;
 
 /**
- * Экран с информацией о приложении, назначение.
+ * <p>Экран с информацией о приложении, назначение.</p>
  *
  * @author Pavel Annin.
  */
-public class AboutActivity extends BaseActivity implements AboutView {
-
-    @Inject
-    AboutPresenter mPresenter;
-    @Bind(R.id.main_container)
-    View mainView;
-    private AboutViewHolder mViewHolder;
+public class AboutActivity extends BaseActivity<AboutPresenter> implements AboutView {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        getApplicationComponent().inject(this);
-        ButterKnife.bind(this);
-        mViewHolder = new AboutViewHolder(mainView);
-        mPresenter.setViewHolder(mViewHolder);
-        mPresenter.setView(this);
-        mPresenter.onInitialization();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mPresenter.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mPresenter.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mPresenter.onDestroy();
-        mViewHolder.onDestroyView();
-        ButterKnife.unbind(this);
+        AboutViewHolder viewHolder = new AboutViewHolder(findViewById(R.id.main_container));
+        presenter = new AboutPresenter();
+        presenter.setViewHolder(viewHolder);
+        presenter.setView(this);
+        presenter.onInitialization();
     }
 
     @Override

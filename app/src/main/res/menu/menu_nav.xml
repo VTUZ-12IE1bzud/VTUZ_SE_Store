@@ -7,7 +7,7 @@
         android:checkableBehavior="none">
 
         <item
-            android:id="@+id/action_nav_receipt_product_invoice"
+            android:id="@+id/action_nav_invoice"
             android:icon="@drawable/ic_invoice"
             android:title="@string/title_nav_item_receipt_product_invoice" />
 
@@ -18,9 +18,9 @@
         android:checkableBehavior="none">
 
         <item
-            android:id="@+id/action_nav_card_producat"
+            android:id="@+id/action_nav_nomenclature"
             android:icon="@drawable/ic_book"
-            android:title="@string/title_nav_item_card_product" />
+            android:title="@string/title_nav_item_nomenclature" />
 
         <item
             android:id="@+id/action_nav_store"

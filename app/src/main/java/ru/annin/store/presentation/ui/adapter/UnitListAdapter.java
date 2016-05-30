@@ -68,7 +68,7 @@ public class UnitListAdapter extends ArrayAdapter<UnitModel> {
         if (model.isValid()) {
             final TextView textView = (TextView) convertView.findViewById(android.R.id.text1);
             final String format = textView.getResources().getString(
-                    R.string.msg_unit_list_item_name_format, model.getName(), model.getSymbol());
+                    R.string.msg_unit_item_name_format, model.getName(), model.getSymbol());
             textView.setText(format);
         }
         return convertView;
@@ -126,7 +126,7 @@ public class UnitListAdapter extends ArrayAdapter<UnitModel> {
 
         public ViewHolder showName(String name, String symbol) {
             final String format = txtName.getResources().getString(
-                    R.string.msg_unit_list_item_name_format, name, symbol);
+                    R.string.msg_unit_item_name_format, name, symbol);
             txtName.setText(format);
             return this;
         }

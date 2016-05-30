@@ -20,6 +20,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
@@ -28,9 +29,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.TextView;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import io.realm.RealmResults;
 import ru.annin.store.R;
 import ru.annin.store.domain.model.StoreModel;
@@ -38,21 +36,17 @@ import ru.annin.store.presentation.common.BaseViewHolder;
 import ru.annin.store.presentation.ui.adapter.StoreAdapter;
 
 /**
- * ViewHolder экрана "Склады".
+ * <p>ViewHolder экрана "Склады".</p>
  *
  * @author Pavel Annin.
  */
 public class StoreViewHolder extends BaseViewHolder {
 
     // View's
-    @Bind(R.id.main_container)
-    View mainView;
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.list_store)
-    RecyclerView listStore;
-    @Bind(R.id.txt_empty)
-    TextView txtEmpty;
+    private final Toolbar toolbar;
+    private final RecyclerView listStore;
+    private final TextView txtEmpty;
+    private final FloatingActionButton fabAdd;
 
     // Adapter's
     private final StoreAdapter adapter;
@@ -63,7 +57,11 @@ public class StoreViewHolder extends BaseViewHolder {
 
     public StoreViewHolder(@NonNull View view) {
         super(view);
-        ButterKnife.bind(this, view);
+        toolbar = (Toolbar) vRoot.findViewById(R.id.toolbar);
+        listStore = (RecyclerView) vRoot.findViewById(R.id.list_store);
+        txtEmpty = (TextView) vRoot.findViewById(R.id.txt_empty);
+        fabAdd = (FloatingActionButton) vRoot.findViewById(R.id.fab_add);
+
         // Setup
         adapter = new StoreAdapter(true);
         itemTouchHelper = new ItemTouchHelper(onItemTouchHelper);
@@ -73,12 +71,7 @@ public class StoreViewHolder extends BaseViewHolder {
         listStore.setAdapter(adapter);
         itemTouchHelper.attachToRecyclerView(listStore);
         adapter.setOnClickListener(onItemClickListener);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
+        fabAdd.setOnClickListener(v -> onCreateClick());
     }
 
     public StoreViewHolder showStores(final RealmResults<StoreModel> stores) {
@@ -92,7 +85,7 @@ public class StoreViewHolder extends BaseViewHolder {
     }
 
     public StoreViewHolder showMessage(@StringRes int text) {
-        Snackbar.make(mainView, text, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(vRoot, text, Snackbar.LENGTH_LONG).show();
         return this;
     }
 
@@ -100,7 +93,6 @@ public class StoreViewHolder extends BaseViewHolder {
         this.listener = listener;
     }
 
-    @OnClick(R.id.fab_add)
     void onCreateClick() {
         if (listener != null) {
             listener.onCreateStoreClick();
@@ -135,11 +127,11 @@ public class StoreViewHolder extends BaseViewHolder {
                 View itemView = viewHolder.itemView;
                 Paint paint = new Paint();
                 if (dX > 0) {
-                    paint.setColor(mResources.getColor(R.color.accent));
+                    paint.setColor(getColor(R.color.accent));
                     c.drawRect((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom(), paint);
 
                 } else {
-                    paint.setColor(mResources.getColor(R.color.accent));
+                    paint.setColor(getColor(R.color.accent));
                     c.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom(), paint);
                 }
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);

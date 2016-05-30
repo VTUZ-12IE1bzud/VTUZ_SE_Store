@@ -16,7 +16,8 @@
 
 package ru.annin.store.presentation.presenter;
 
-import javax.inject.Inject;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import ru.annin.store.BuildConfig;
 import ru.annin.store.presentation.common.BasePresenter;
@@ -28,38 +29,29 @@ import ru.annin.store.presentation.ui.viewholder.AboutViewHolder;
  *
  * @author Pavel Annin.
  */
-public class AboutPresenter extends BasePresenter {
-
-    private AboutView mView;
-    private AboutViewHolder mViewHolder;
-
-    @Inject
-    public AboutPresenter() {
-        // Empty
-    }
+public class AboutPresenter extends BasePresenter<AboutViewHolder, AboutView> {
 
     public void onInitialization() {
-        if (mViewHolder != null) {
-            mViewHolder.showAppVersion(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE);
+        if (viewHolder != null) {
+            viewHolder.showAppVersion(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE);
         }
     }
 
-    public void setViewHolder(AboutViewHolder viewHolder) {
-        mViewHolder = viewHolder;
-        if (mViewHolder != null) {
-            mViewHolder.setOnClickListener(onViewHolderClickListener);
+    @NonNull
+    @Override
+    public BasePresenter setViewHolder(@Nullable AboutViewHolder aboutViewHolder) {
+        super.setViewHolder(aboutViewHolder);
+        if (viewHolder != null) {
+            viewHolder.setOnClickListener(onViewHolderClickListener);
         }
-    }
-
-    public void setView(AboutView view) {
-        mView = view;
+        return this;
     }
 
     private final AboutViewHolder.OnClickListener onViewHolderClickListener = new AboutViewHolder.OnClickListener() {
         @Override
         public void onNavBackClick() {
-            if (mView != null) {
-                mView.onFinish();
+            if (view != null) {
+                view.onFinish();
             }
         }
     };

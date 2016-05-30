@@ -18,19 +18,15 @@ package ru.annin.store.presentation.navigation;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import ru.annin.store.presentation.ui.activity.AboutActivity;
-import ru.annin.store.presentation.ui.activity.CardProductActivity;
-import ru.annin.store.presentation.ui.activity.DetailCardProductActivity;
+import ru.annin.store.presentation.ui.activity.DetailNomenclatureActivity;
 import ru.annin.store.presentation.ui.activity.DetailStoreActivity;
 import ru.annin.store.presentation.ui.activity.DetailUnitActivity;
+import ru.annin.store.presentation.ui.activity.InvoiceActivity;
 import ru.annin.store.presentation.ui.activity.MainActivity;
-import ru.annin.store.presentation.ui.activity.ReceiptProductInvoiceActivity;
+import ru.annin.store.presentation.ui.activity.NomenclatureActivity;
 import ru.annin.store.presentation.ui.activity.StoreActivity;
 import ru.annin.store.presentation.ui.activity.UnitActivity;
 
@@ -39,57 +35,15 @@ import ru.annin.store.presentation.ui.activity.UnitActivity;
  *
  * @author Pavel Annin.
  */
-@Singleton
 public class Navigator {
-
-    @Inject
-    public Navigator() {
-        // Empty
-    }
 
     public void navigate2Main(@NonNull Context ctx) {
         final Intent intent = new Intent(ctx, MainActivity.class);
         ctx.startActivity(intent);
     }
 
-    public void navigate2GitHub(@NonNull Context ctx) {
-        final String url = "https://github.com/anninpavel/VTUZ_SoftwareEngineering_Store";
-        final Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        ctx.startActivity(intent);
-    }
-
-    public void navigate2ReceiptProductInvoice(@NonNull Context ctx) {
-        final Intent intent = new Intent(ctx, ReceiptProductInvoiceActivity.class);
-        ctx.startActivity(intent);
-    }
-
-    public void navigate2CreateReceiptProductInvoice(@NonNull Context ctx) {
-        final Intent intent = new Intent(ctx, .class);
-        ctx.startActivity(intent);
-    }
-
-    public void navigate2OpenReceiptProductInvoice(@NonNull Context ctx, @NonNull String receiptProductInvoiceId) {
-        final Intent intent = new Intent(ctx, .class);
-        intent.setAction(Intent.ACTION_EDIT);
-        intent.putExtra(.EXTRA_CARD_PRODUCT_ID, receiptProductInvoiceId);
-        ctx.startActivity(intent);
-    }
-
-    public void navigate2CardProducts(@NonNull Context ctx) {
-        final Intent intent = new Intent(ctx, CardProductActivity.class);
-        ctx.startActivity(intent);
-    }
-
-    public void navigate2CreateCardProduct(@NonNull Context ctx) {
-        final Intent intent = new Intent(ctx, DetailCardProductActivity.class);
-        ctx.startActivity(intent);
-    }
-
-    public void navigate2OpenCardProduct(@NonNull Context ctx, @NonNull String cardProductId) {
-        final Intent intent = new Intent(ctx, DetailCardProductActivity.class);
-        intent.setAction(Intent.ACTION_EDIT);
-        intent.putExtra(DetailCardProductActivity.EXTRA_CARD_PRODUCT_ID, cardProductId);
+    public void navigate2Invoice(@NonNull Context ctx) {
+        final Intent intent = new Intent(ctx, InvoiceActivity.class);
         ctx.startActivity(intent);
     }
 
@@ -124,6 +78,23 @@ public class Navigator {
         final Intent intent = new Intent(ctx, DetailUnitActivity.class);
         intent.setAction(Intent.ACTION_EDIT);
         intent.putExtra(DetailUnitActivity.EXTRA_UNIT_ID, unitId);
+        ctx.startActivity(intent);
+    }
+
+    public void navigate2Nomenclature(@NonNull Context ctx) {
+        final Intent intent = new Intent(ctx, NomenclatureActivity.class);
+        ctx.startActivity(intent);
+    }
+
+    public void navigate2CreateNomenclature(@NonNull Context ctx) {
+        final Intent intent = new Intent(ctx, DetailNomenclatureActivity.class);
+        ctx.startActivity(intent);
+    }
+
+    public void navigate2OpenNomenclature(@NonNull Context ctx, @NonNull String id) {
+        final Intent intent = new Intent(ctx, DetailNomenclatureActivity.class);
+        intent.setAction(Intent.ACTION_EDIT);
+        intent.putExtra(DetailNomenclatureActivity.EXTRA_NOMENCLATURE_ID, id);
         ctx.startActivity(intent);
     }
 

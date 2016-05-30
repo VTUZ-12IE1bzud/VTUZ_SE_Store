@@ -16,12 +16,12 @@
 
 package ru.annin.store.presentation.presenter;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import javax.inject.Inject;
-
 import ru.annin.store.R;
-import ru.annin.store.domain.repository.DataRepository;
+import ru.annin.store.domain.repository.UnitRepository;
 import ru.annin.store.presentation.common.BasePresenter;
 import ru.annin.store.presentation.ui.view.DetailUnitView;
 import ru.annin.store.presentation.ui.viewholder.DetailUnitViewHolder;
@@ -30,25 +30,24 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * Presenter экрана единица измерения.
+ * <p>Presenter экрана единица измерения.</p>
  *
  * @author Pavel Annin.
  */
-public class DetailUnitPresenter extends BasePresenter {
+public class DetailUnitPresenter extends BasePresenter<DetailUnitViewHolder, DetailUnitView> {
 
-    private DetailUnitViewHolder mViewHolder;
-    private DetailUnitView mView;
-    private CompositeSubscription mSubscription;
+    // Repository
+    private final UnitRepository unitRepository;
 
-    private final DataRepository dataRepository;
-
+    // Data's
     private boolean isCreated;
     private String unitId;
 
-    @Inject
-    public DetailUnitPresenter(DataRepository dataRepository) {
-        this.dataRepository = dataRepository;
-        mSubscription = new CompositeSubscription();
+    private CompositeSubscription subscription;
+
+    public DetailUnitPresenter(@NonNull UnitRepository unitRepository) {
+        this.unitRepository = unitRepository;
+        subscription = new CompositeSubscription();
     }
 
     public void onInitialization() {
@@ -57,67 +56,58 @@ public class DetailUnitPresenter extends BasePresenter {
 
     public void onInitialization(String unitId) {
         isCreated = false;
-        final Subscription sub = dataRepository.getUnitById(unitId)
+        final Subscription sub = unitRepository.getById(unitId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
                     this.unitId = model.getId();
-                    if (mViewHolder != null) {
-                        mViewHolder.showName(model.getName())
-                                .showSymbol(model.getSymbol())
-                                .showDescription(model.getDescription());
-                    }});
-        mSubscription.add(sub);
+                    if (viewHolder != null) {
+                        viewHolder.showName(model.getName())
+                                .showSymbol(model.getSymbol());
+                    }
+                });
+        subscription.add(sub);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mSubscription.unsubscribe();
+        subscription.unsubscribe();
     }
 
-    public void setViewHolder(DetailUnitViewHolder viewHolder) {
-        mViewHolder = viewHolder;
-        if (mViewHolder != null) {
-            mViewHolder.setOnClickListener(onHolderListener);
+    @NonNull
+    @Override
+    public BasePresenter setViewHolder(@Nullable DetailUnitViewHolder detailUnitViewHolder) {
+        super.setViewHolder(detailUnitViewHolder);
+        if (viewHolder != null) {
+            viewHolder.setOnClickListener(onHolderListener);
         }
+        return this;
     }
 
-    public void setView(DetailUnitView view) {
-        mView = view;
-    }
-
-    private boolean isValidation(String name, String symbol, String description) {
+    private boolean isValidation(String name, String symbol) {
         boolean isValidation = true;
 
         String msgEmpty = "";
-        if (mView != null) {
-            msgEmpty = mView.getString(R.string.error_unit_field_empty);
+        if (view != null) {
+            msgEmpty = view.getString(R.string.error_unit_field_empty);
         }
 
-        if (mViewHolder != null) {
-            mViewHolder.errorName(null)
-                    .errorSymbol(null)
-                    .errorDescription(null);
+        if (viewHolder != null) {
+            viewHolder.errorName(null)
+                    .errorSymbol(null);
         }
 
         if (TextUtils.isEmpty(name)) {
             isValidation = false;
-            if (mViewHolder != null) {
-                mViewHolder.errorName(msgEmpty);
+            if (viewHolder != null) {
+                viewHolder.errorName(msgEmpty);
             }
         }
 
         if (TextUtils.isEmpty(symbol)) {
             isValidation = false;
-            if (mViewHolder != null) {
-                mViewHolder.errorSymbol(msgEmpty);
-            }
-        }
-
-        if (TextUtils.isEmpty(description)) {
-            isValidation = false;
-            if (mViewHolder != null) {
-                mViewHolder.errorDescription(msgEmpty);
+            if (viewHolder != null) {
+                viewHolder.errorSymbol(msgEmpty);
             }
         }
 
@@ -127,21 +117,21 @@ public class DetailUnitPresenter extends BasePresenter {
     private final DetailUnitViewHolder.OnClickListener onHolderListener = new DetailUnitViewHolder.OnClickListener() {
         @Override
         public void onNavigationBackClick() {
-            if (mView != null) {
-                mView.onFinish();
+            if (view != null) {
+                view.onFinish();
             }
         }
 
         @Override
-        public void onSaveClick(String name, String symbol, String description) {
-            if (isValidation(name, symbol, description)) {
-                final boolean result = isCreated
-                        ? dataRepository.createUnit(name, symbol, description)
-                        : dataRepository.saveUnit(unitId, name, symbol, description);
-                if (result) {
-                    if (mView != null) {
-                        mView.onFinish();
-                    }
+        public void onSaveClick(String name, String symbol) {
+            if (isValidation(name, symbol)) {
+                if (isCreated) {
+                    unitRepository.asyncCreateUnit(name, symbol);
+                } else {
+                    unitRepository.asyncSaveUnit(unitId, name, symbol);
+                }
+                if (view != null) {
+                    view.onFinish();
                 }
             }
         }

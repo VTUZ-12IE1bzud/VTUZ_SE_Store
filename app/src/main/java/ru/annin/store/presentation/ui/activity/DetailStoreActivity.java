@@ -19,13 +19,10 @@ package ru.annin.store.presentation.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
 
-import javax.inject.Inject;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import ru.annin.store.R;
+import ru.annin.store.data.repository.StoreRepositoryImpl;
+import ru.annin.store.presentation.common.BaseActivity;
 import ru.annin.store.presentation.presenter.DetailStorePresenter;
 import ru.annin.store.presentation.ui.view.DetailStoreView;
 import ru.annin.store.presentation.ui.viewholder.DetailStoreViewHolder;
@@ -35,51 +32,24 @@ import ru.annin.store.presentation.ui.viewholder.DetailStoreViewHolder;
  *
  * @author Pavel Annin.
  */
-public class DetailStoreActivity extends BaseActivity implements DetailStoreView {
+public class DetailStoreActivity extends BaseActivity<DetailStorePresenter> implements DetailStoreView {
 
     public static final String EXTRA_STORE_ID = "ru.annin.store.extra.store_id";
-
-    @Inject
-    DetailStorePresenter mPresenter;
-    @Bind(R.id.main_container)
-    View mainView;
-    private DetailStoreViewHolder mViewHolder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_detail);
-        getApplicationComponent().inject(this);
-        ButterKnife.bind(this);
-        mViewHolder = new DetailStoreViewHolder(mainView);
-        mPresenter.setViewHolder(mViewHolder);
-        mPresenter.setView(this);
+        DetailStoreViewHolder viewHolder = new DetailStoreViewHolder(findViewById(R.id.main_container));
+        presenter = new DetailStorePresenter(new StoreRepositoryImpl());
+        presenter.setViewHolder(viewHolder);
+        presenter.setView(this);
         if (Intent.ACTION_EDIT.equals(getIntent().getAction()) && getIntent().getExtras() != null
                 && getIntent().getExtras().containsKey(EXTRA_STORE_ID)) {
-            mPresenter.onInitialization(getIntent().getExtras().getString(EXTRA_STORE_ID));
+            presenter.onInitialization(getIntent().getExtras().getString(EXTRA_STORE_ID));
         } else {
-            mPresenter.onInitialization();
+            presenter.onInitialization();
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mPresenter.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mPresenter.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mPresenter.onDestroy();
-        mViewHolder.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     @Override

@@ -16,11 +16,12 @@
 
 package ru.annin.store.presentation.presenter;
 
-import javax.inject.Inject;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import ru.annin.store.R;
 import ru.annin.store.domain.model.UnitModel;
-import ru.annin.store.domain.repository.DataRepository;
+import ru.annin.store.domain.repository.UnitRepository;
 import ru.annin.store.presentation.common.BasePresenter;
 import ru.annin.store.presentation.ui.view.UnitView;
 import ru.annin.store.presentation.ui.viewholder.UnitViewHolder;
@@ -29,81 +30,78 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * Presenter экрана "Единицы измерения".
+ * <p>Presenter экрана "Единицы измерения".</p>
  *
  * @author Pavel Annin.
  */
-public class UnitPresenter extends BasePresenter {
+public class UnitPresenter extends BasePresenter<UnitViewHolder, UnitView> {
 
-    private UnitViewHolder mViewHolder;
-    private UnitView mView;
+    // Repository
+    private final UnitRepository unitRepository;
 
-    private final DataRepository dataRepository;
-    private final CompositeSubscription mSubscription;
+    private final CompositeSubscription subscription;
 
-    @Inject
-    public UnitPresenter(DataRepository dataRepository){
-        this.dataRepository = dataRepository;
-        mSubscription = new CompositeSubscription();
+    public UnitPresenter(@NonNull UnitRepository unitRepository){
+        this.unitRepository = unitRepository;
+        subscription = new CompositeSubscription();
     }
 
     public void onInitialization() {
-        final Subscription sub = dataRepository.listUnits()
+        final Subscription sub = unitRepository.getAll()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(unitModels -> {
-                    if (mViewHolder != null) {
-                        mViewHolder.showUnits(unitModels);
+                    if (viewHolder != null) {
+                        viewHolder.showUnits(unitModels);
                     }
                 });
-        mSubscription.add(sub);
+        subscription.add(sub);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mSubscription.unsubscribe();
+        subscription.unsubscribe();
     }
 
-    public void setViewHolder(UnitViewHolder viewHolder) {
-        mViewHolder = viewHolder;
-        if (mViewHolder != null) {
-            mViewHolder.setOnClickListener(onViewHolderClickListener);
+    @NonNull
+    @Override
+    public BasePresenter setViewHolder(@Nullable UnitViewHolder unitViewHolder) {
+        super.setViewHolder(unitViewHolder);
+        if (viewHolder != null) {
+            viewHolder.setOnClickListener(onViewHolderClickListener);
         }
-    }
-
-    public void setView(UnitView view) {
-        mView = view;
+        return this;
     }
 
     private final UnitViewHolder.OnClickListener onViewHolderClickListener = new UnitViewHolder.OnClickListener() {
         @Override
         public void onCreateUnitClick() {
-            if (mView != null) {
-                mView.onCreateUnitOpen();
+            if (view != null) {
+                view.onCreateUnitOpen();
             }
         }
 
         @Override
         public void onRemoveItem(UnitModel unit, int position) {
-            if (dataRepository.canUnitRemoved(unit.getId())) {
-                dataRepository.removeUnit(unit.getId());
-            } else {
-                mViewHolder.insertItem(position)
+            if (unitRepository.canUnitRemoved(unit.getId())) {
+                unitRepository.asyncRemoveUnit(unit.getId());
+            } else if (viewHolder != null){
+                viewHolder.insertItem(position)
                         .showMessage(R.string.error_unit_used_removed);
             }
         }
 
         @Override
         public void onItemClick(UnitModel unit) {
-            if (mView != null) {
-                mView.onUnitOpen(unit.getId());
+            if (view != null) {
+                view.onUnitOpen(unit.getId());
             }
         }
 
         @Override
         public void onNavBackClick() {
-            if (mView != null) {
-                mView.onFinish();
+            if (view != null) {
+                view.onFinish();
             }
         }
     };

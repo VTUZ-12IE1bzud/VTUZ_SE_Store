@@ -24,6 +24,10 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmMigration;
 import io.realm.RealmSchema;
+import ru.annin.store.R;
+import ru.annin.store.domain.model.NomenclatureModel;
+import ru.annin.store.domain.model.StoreModel;
+import ru.annin.store.domain.model.UnitModel;
 
 /**
  *
@@ -46,6 +50,17 @@ public class RealmUtil {
                 .migration(new Migration())
                 .build();
         Realm.setDefaultConfiguration(configuration);
+    }
+
+    public static void importDefaultData(@NonNull Context ctx) {
+        String unitJson = ctx.getString(R.string.default_units);
+        String storeJson = ctx.getString(R.string.default_store);
+        String nomenclatureJson = ctx.getString(R.string.default_nomenclature);
+        getRealm().executeTransactionAsync(realm -> {
+            realm.createOrUpdateAllFromJson(UnitModel.class, unitJson);
+            realm.createOrUpdateAllFromJson(StoreModel.class, storeJson);
+            realm.createOrUpdateAllFromJson(NomenclatureModel.class, nomenclatureJson);
+        });
     }
 
     public static Realm getRealm() {

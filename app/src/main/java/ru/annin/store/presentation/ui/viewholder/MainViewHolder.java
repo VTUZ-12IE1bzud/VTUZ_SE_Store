@@ -22,13 +22,17 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+import io.realm.RealmResults;
 import ru.annin.store.R;
+import ru.annin.store.domain.model.StoreModel;
 import ru.annin.store.presentation.common.BaseViewHolder;
+import ru.annin.store.presentation.ui.adapter.StoreSelectAdapter;
 
 /**
  * BaseViewHolder главного экрана.
@@ -38,35 +42,47 @@ import ru.annin.store.presentation.common.BaseViewHolder;
 public class MainViewHolder extends BaseViewHolder {
 
     // View's
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
-    @Bind(R.id.nav)
-    NavigationView navigation;
+    private final Toolbar toolbar;
+    private final DrawerLayout drawerLayout;
+    private final NavigationView navigation;
+    private final Spinner spStore;
 
     private ActionBarDrawerToggle drawerToggle;
+
+    // Adapter's
+    private final StoreSelectAdapter storeAdapter;
 
     // Listener's
     private OnClickListener listener;
 
     public MainViewHolder(@NonNull Activity activity, @NonNull View view) {
         super(view);
-        ButterKnife.bind(this, view);
+        toolbar = (Toolbar) vRoot.findViewById(R.id.toolbar);
+        drawerLayout = (DrawerLayout) vRoot.findViewById(R.id.drawer_layout);
+        navigation = (NavigationView) vRoot.findViewById(R.id.nav);
+        spStore = (AppCompatSpinner) navigation.getHeaderView(0).findViewById(R.id.sp_store);
+
         // Setup
         drawerToggle = new ActionBarDrawerToggle(activity, drawerLayout, toolbar,
                 R.string.title_nav_drawer_open, R.string.title_nav_drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
+        storeAdapter = new StoreSelectAdapter(vRoot.getContext());
+        spStore.setOnItemSelectedListener(onStoreListener);
         navigation.setNavigationItemSelectedListener(onNavigationClickListener);
-        navigation.getHeaderView(0).findViewById(R.id.ibtn_github).setOnClickListener(onGitHubClickListener);
+        spStore.setAdapter(storeAdapter);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        drawerLayout.removeDrawerListener(drawerToggle);
-        ButterKnife.unbind(this);
+    public MainViewHolder showStore(RealmResults<StoreModel> data, String selectId) {
+        showStore(data);
+        int selectPosition = storeAdapter.getPosition(selectId);
+        spStore.setSelection(selectPosition);
+        return this;
+    }
+
+    public MainViewHolder showStore(RealmResults<StoreModel> data) {
+        storeAdapter.updateData(data);
+        return this;
     }
 
     public MainViewHolder showNavigation() {
@@ -90,20 +106,20 @@ public class MainViewHolder extends BaseViewHolder {
     private final NavigationView.OnNavigationItemSelectedListener onNavigationClickListener = item -> {
         if (listener != null) {
             switch (item.getItemId()) {
-                case R.id.action_nav_receipt_product_invoice:
-                    listener.onReceiptProductInvoiceClick();
+                case R.id.action_nav_invoice:
+                    listener.onNavInvoiceClick();
                     return true;
-                case R.id.action_nav_card_producat:
-                    listener.onCardProductClick();
+                case R.id.action_nav_nomenclature:
+                    listener.onNavNomenclatureClick();
                     return true;
                 case R.id.action_nav_store:
-                    listener.onStoreClick();
+                    listener.onNavStoreClick();
                     return true;
                 case R.id.action_nav_units:
-                    listener.onUnitsClick();
+                    listener.onNavUnitsClick();
                     return true;
                 case R.id.action_nav_about:
-                    listener.onAboutClick();
+                    listener.onNavAboutClick();
                     return true;
                 default:
                     break;
@@ -112,18 +128,27 @@ public class MainViewHolder extends BaseViewHolder {
         return false;
     };
 
-    private final View.OnClickListener onGitHubClickListener = v -> {
-        if (listener != null) {
-            listener.onGitHubClick();
+    private final AdapterView.OnItemSelectedListener onStoreListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            String storeId = storeAdapter.getId(position);
+            if (listener != null) {
+                listener.onStoreSelect(storeId);
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
         }
     };
 
     public interface OnClickListener {
-        void onGitHubClick();
-        void onReceiptProductInvoiceClick();
-        void onCardProductClick();
-        void onStoreClick();
-        void onUnitsClick();
-        void onAboutClick();
+        void onNavInvoiceClick();
+        void onNavNomenclatureClick();
+        void onNavStoreClick();
+        void onNavUnitsClick();
+        void onNavAboutClick();
+        void onStoreSelect(String storeId);
     }
 }

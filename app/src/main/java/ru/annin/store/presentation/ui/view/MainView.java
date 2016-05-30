@@ -23,9 +23,8 @@ package ru.annin.store.presentation.ui.view;
  */
 public interface MainView {
 
-    void onGitHubOpen();
-    void onReceiptProductInvoiceOpen();
-    void onCardProductsOpen();
+    void onInvoiceOpen();
+    void onNomenclatureOpen();
     void onStoresOpen();
     void onUnitsOpen();
     void onAboutOpen();

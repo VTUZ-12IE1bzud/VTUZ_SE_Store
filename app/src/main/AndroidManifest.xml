@@ -9,7 +9,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="false"
-        android:theme="@style/Store"
+        android:theme="@style/Store.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
@@ -24,8 +24,8 @@
 
         <activity
             android:name=".presentation.ui.activity.MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/Store.NoActionBar">
+            android:screenOrientation="portrait"
+            android:label="@string/activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -33,19 +33,9 @@
         </activity>
 
         <activity
-            android:name=".presentation.ui.activity.CardProductActivity"
-            android:label="@string/title_activity_card_product"
-            android:theme="@style/Store.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".presentation.ui.activity.DetailCardProductActivity"
-            android:label="@string/title_activity_card_product_detail"
-            android:theme="@style/Store.NoActionBar">
+            android:name=".presentation.ui.activity.InvoiceActivity"
+            android:label="@string/title_activity_invoice"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -55,7 +45,7 @@
         <activity
             android:name=".presentation.ui.activity.StoreActivity"
             android:label="@string/title_activity_store"
-            android:theme="@style/Store.NoActionBar">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -65,7 +55,7 @@
         <activity
             android:name=".presentation.ui.activity.DetailStoreActivity"
             android:label="@string/title_activity_store_detail"
-            android:theme="@style/Store.NoActionBar">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -75,7 +65,7 @@
         <activity
             android:name=".presentation.ui.activity.UnitActivity"
             android:label="@string/title_activity_unit"
-            android:theme="@style/Store.NoActionBar">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -85,7 +75,27 @@
         <activity
             android:name=".presentation.ui.activity.DetailUnitActivity"
             android:label="@string/title_activity_unit_detail"
-            android:theme="@style/Store.NoActionBar">
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".presentation.ui.activity.NomenclatureActivity"
+            android:label="@string/title_activity_nomenclature"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".presentation.ui.activity.DetailNomenclatureActivity"
+            android:label="@string/title_activity_nomenclature_detail"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -95,17 +105,7 @@
         <activity
             android:name=".presentation.ui.activity.AboutActivity"
             android:label="@string/title_nav_item_about"
-            android:theme="@style/Store.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".presentation.ui.activity.ReceiptProductInvoiceActivity"
-            android:label="@string/title_activity_receipt_product_invoice"
-            android:theme="@style/Store.NoActionBar">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />

@@ -3,37 +3,42 @@
     <string name="msg_list_empty">Пусто</string>
 
     <!-- Activity Label -->
-    <string name="title_activity_main">@string/app_name</string>
+    <string name="activity_main">@string/app_name</string>
     <string name="title_activity_about">О программе</string>
     <string name="title_activity_unit">Единицы измерения</string>
     <string name="title_activity_unit_detail">Единица измерения</string>
-    <string name="title_activity_card_product">Карточка товаров</string>
-    <string name="title_activity_card_product_detail">Карточка товара</string>
+    <string name="title_activity_nomenclature">Номенклатура</string>
+    <string name="title_activity_nomenclature_detail">Номенклатура</string>
+
     <string name="title_activity_store">Склады</string>
     <string name="title_activity_store_detail">Склад</string>
-    <string name="title_activity_receipt_product_invoice">Товарные накладные</string>
+    <string name="title_activity_invoice">Товарные накладные</string>
 
     <!-- Nav -->
     <string name="title_nav_item_unit">@string/title_activity_unit</string>
-    <string name="title_nav_item_card_product">@string/title_activity_card_product</string>
     <string name="title_nav_item_store">@string/title_activity_store</string>
+    <string name="title_nav_item_nomenclature">@string/title_activity_nomenclature</string>
     <string name="title_nav_item_about">@string/title_activity_about</string>
-    <string name="title_nav_item_receipt_product_invoice">@string/title_activity_receipt_product_invoice</string>
+    <string name="title_nav_item_receipt_product_invoice">@string/title_activity_invoice</string>
 
     <!-- Main -->
     <string name="title_nav_drawer_open">Отркыть меню</string>
     <string name="title_nav_drawer_close">Закрыть меню</string>
 
-    <!-- CardProduct -->
-    <string name="error_card_product_used_removed">Удалеине не возможно, карточка товара используется</string>
+    <!-- Invoice -->
+    <string name="item_price_format">%1$f р.</string>
 
-    <!-- CardProduct Detail -->
-    <string name="msg_card_product_name">Название</string>
-    <string name="msg_card_product_unit">Единица измерения</string>
-    <string name="action_card_product_save">Сохранить</string>
-    <string name="error_card_product_field_empty">Заполните поле</string>
-    <string name="error_card_product_unit_empty">Не создано не одной единицы измерения</string>
-    <string name="msg_unit_list_item_name_format">%1$s (%2$s)</string>
+    <!-- Nomenclature -->
+    <string name="msg_unit_item_name_format">%1$s (%2$s)</string>
+    <string name="error_nomenclature_used_removed">Удалеине не возможно номенклатура используется</string>
+
+    <!-- Nomenclature Detail -->
+    <string name="msg_nomenclature_name">Название</string>
+    <string name="msg_nomenclature_unit">Единица измерения</string>
+    <string name="action_nomenclature_save">Сохранить</string>
+    <string name="error_nomenclature_field_empty">Заполните поле</string>
+    <string name="error_nomenclature_unit_empty">Не создано не одной единицы измерения</string>
+    <string name="msg_nomenclature_unit_list_item_name_format">%1$s</string>
 
     <!-- Store -->
     <string name="error_store_used_removed">Удалеине не возможно, склад используется</string>
@@ -44,7 +49,6 @@
     <string name="error_store_field_empty">Заполните поле</string>
 
     <!-- Unit -->
-    <string name="msg_unit_item_name_format">%1$s (%2$s)</string>
     <string name="error_unit_used_removed">Удалеине не возможно единица измерения используется</string>
 
     <!-- Unit Detail -->
@@ -53,11 +57,6 @@
     <string name="msg_unit_description">Описание</string>
     <string name="action_unit_save">Сохранить</string>
     <string name="error_unit_field_empty">Заполните поле</string>
-
-    <!-- Receipt Product Invoice  -->
-    <string name="msg_receipt_product_invoice_amount_format">%1$f %2$s</string>
-    <string name="msg_receipt_product_invoice_price_format">%1$f р</string>
-    <string name="msg_receipt_product_invoice_sum_format">%1$f р</string>
 
     <!-- About -->
     <string name="title_app_version_format">Склад\nверсия %1$s (сборка %2$d)</string>
@@ -74,8 +73,10 @@
         \nSee the License for the specific language governing permissions and
         limitations under the License.</string>
     <string name="msg_app_dependencies">При разработке использовались сторонние зависимости:
-        \n    • Realm 0.90.0 (https://github.com/realm/realm-java), Apache 2.0 license;
-        \n    • Dagger 2 (https://github.com/google/dagger), Apache 2.0 license;
-        \n    • ButterKnife 7.0.1 (https://github.com/JakeWharton/butterknife), Apache 2.0 license;</string>
+        \n    • Realm v1.0.0 (https://github.com/realm/realm-java), Apache 2.0 license;
+        \n    • RxJava v1.1.5 (https://github.com/ReactiveX/RxJava), Apache 2.0 license;
+        \n    • RxAndroid v1.2.0 (https://github.com/ReactiveX/RxAndroid), Apache 2.0 license;
+        \n    • RetroLambda v3.3.0-beta4 (https://github.com/evant/gradle-retrolambda), Apache 2.0 license.
+    </string>
 
 </resources>

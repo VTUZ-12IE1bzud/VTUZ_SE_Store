@@ -22,50 +22,38 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import ru.annin.store.R;
 import ru.annin.store.presentation.common.BaseViewHolder;
 
 /**
- * ViewHolder экрана единицы измерения.
+ * <p>ViewHolder экрана единицы измерения.</p>
  *
  * @author Pavel Annin.
  */
 public class DetailUnitViewHolder extends BaseViewHolder {
 
     // View's
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.til_name)
-    TextInputLayout tilName;
-    @Bind(R.id.til_symbol)
-    TextInputLayout tilSymbol;
-    @Bind(R.id.til_description)
-    TextInputLayout tilDescription;
-    @Bind(R.id.edt_name)
-    EditText edtName;
-    @Bind(R.id.edt_symbol)
-    EditText edtSymbol;
-    @Bind(R.id.edt_description)
-    EditText edtDescription;
+    private final Toolbar toolbar;
+    private final TextInputLayout tilName;
+    private final EditText edtName;
+    private final TextInputLayout tilSymbol;
+    private final EditText edtSymbol;
 
     // Listener's
     private OnClickListener listener;
 
     public DetailUnitViewHolder(@NonNull View view) {
         super(view);
-        ButterKnife.bind(this, view);
+        toolbar = (Toolbar) vRoot.findViewById(R.id.toolbar);
+        tilName = (TextInputLayout) vRoot.findViewById(R.id.til_name_unit);
+        edtName = (EditText) vRoot.findViewById(R.id.edt_name_unti);
+        tilSymbol = (TextInputLayout) vRoot.findViewById(R.id.til_symbol_unit);
+        edtSymbol = (EditText) vRoot.findViewById(R.id.edt_symbol_unit);
+
         // Setup
         toolbar.setNavigationOnClickListener(onNavigationClickListener);
         toolbar.inflateMenu(R.menu.menu_unit_detail);
         toolbar.setOnMenuItemClickListener(onMenuItemClickListener);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     public DetailUnitViewHolder errorName(String text) {
@@ -84,20 +72,10 @@ public class DetailUnitViewHolder extends BaseViewHolder {
         return this;
     }
 
-    public DetailUnitViewHolder showDescription(String text) {
-        edtDescription.setText(text);
-        return this;
-    }
 
     public DetailUnitViewHolder errorSymbol(String text) {
         tilSymbol.setErrorEnabled(text != null);
         tilSymbol.setError(text);
-        return this;
-    }
-
-    public DetailUnitViewHolder errorDescription(String text) {
-        tilDescription.setErrorEnabled(text != null);
-        tilDescription.setError(text);
         return this;
     }
 
@@ -119,15 +97,11 @@ public class DetailUnitViewHolder extends BaseViewHolder {
         return edtSymbol.getText().toString();
     }
 
-    private String getDescription() {
-        return edtDescription.getText().toString();
-    }
-
     private final Toolbar.OnMenuItemClickListener onMenuItemClickListener = item -> {
         if (listener != null) {
             switch (item.getItemId()) {
                 case R.id.action_save:
-                    listener.onSaveClick(getName(), getSymbol(), getDescription());
+                    listener.onSaveClick(getName(), getSymbol());
                     return true;
                 default:
                     break;
@@ -139,6 +113,6 @@ public class DetailUnitViewHolder extends BaseViewHolder {
     public interface OnClickListener {
         void onNavigationBackClick();
 
-        void onSaveClick(String name, String symbol, String description);
+        void onSaveClick(String name, String symbol);
     }
 }

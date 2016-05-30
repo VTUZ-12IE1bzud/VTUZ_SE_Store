@@ -18,10 +18,9 @@ package ru.annin.store;
 
 import android.app.Application;
 
+import ru.annin.store.data.repository.SettingsRepositoryImpl;
 import ru.annin.store.data.util.RealmUtil;
-import ru.annin.store.di.component.ApplicationComponent;
-import ru.annin.store.di.component.DaggerApplicationComponent;
-import ru.annin.store.di.module.ApplicationModule;
+import ru.annin.store.domain.repository.SettingsRepository;
 
 /**
  * <p> Класс приложения. </p>
@@ -30,22 +29,14 @@ import ru.annin.store.di.module.ApplicationModule;
  */
 public class StoreApplication extends Application {
 
-    private ApplicationComponent applicationComponent;
-
     @Override
     public void onCreate() {
         super.onCreate();
-        initializeInjector();
-        RealmUtil.initialize(getApplicationContext());
-    }
-
-    private void initializeInjector() {
-        this.applicationComponent = DaggerApplicationComponent.builder()
-                .applicationModule(new ApplicationModule(this))
-                .build();
-    }
-
-    public ApplicationComponent getApplicationComponent() {
-        return this.applicationComponent;
+        SettingsRepository settingsRepository = new SettingsRepositoryImpl(this);
+        RealmUtil.initialize(this);
+        if (settingsRepository.isFirstStart()) {
+            RealmUtil.importDefaultData(this);
+            settingsRepository.saveFirstStart(false);
+        }
     }
 }

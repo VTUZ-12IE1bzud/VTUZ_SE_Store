@@ -22,9 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ru.annin.store.R;
 import ru.annin.store.domain.model.StoreModel;
 
@@ -67,20 +64,19 @@ public class StoreAdapter extends RealmRecyclerAdapter<StoreModel, StoreAdapter.
     class ViewHolder extends RecyclerView.ViewHolder {
 
         // View's
-        @Bind(R.id.txt_title)
-        TextView txtTitle;
+        private final TextView txtName;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            txtName =(TextView) itemView.findViewById(R.id.txt_name_store);
+            itemView.setOnClickListener(v -> onItemClick());
         }
 
         public ViewHolder showName(String name) {
-            txtTitle.setText(name);
+            txtName.setText(name);
             return this;
         }
 
-        @OnClick(R.id.main_item)
         void onItemClick() {
             if (listener != null) {
                 listener.onItemClick(mRealmResults.get(getAdapterPosition()));

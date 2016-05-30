@@ -16,11 +16,12 @@
 
 package ru.annin.store.presentation.presenter;
 
-import javax.inject.Inject;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import ru.annin.store.R;
 import ru.annin.store.domain.model.StoreModel;
-import ru.annin.store.domain.repository.DataRepository;
+import ru.annin.store.domain.repository.StoreRepository;
 import ru.annin.store.presentation.common.BasePresenter;
 import ru.annin.store.presentation.ui.view.StoreView;
 import ru.annin.store.presentation.ui.viewholder.StoreViewHolder;
@@ -32,25 +33,23 @@ import rx.subscriptions.CompositeSubscription;
  *
  * @author Pavel Annin.
  */
-public class StorePresenter extends BasePresenter {
+public class StorePresenter extends BasePresenter<StoreViewHolder, StoreView> {
 
-    private StoreViewHolder mViewHolder;
-    private StoreView mView;
+    // Repository
+    private final StoreRepository storeRepository;
 
-    private final DataRepository dataRepository;
     private final CompositeSubscription subscriptions;
 
-    @Inject
-    public StorePresenter(DataRepository dataRepository){
-        this.dataRepository = dataRepository;
+    public StorePresenter(@NonNull StoreRepository storeRepository){
+        this.storeRepository = storeRepository;
         subscriptions = new CompositeSubscription();
     }
 
     public void onInitialization() {
-        final Subscription subscription = dataRepository.listStores()
+        final Subscription subscription = storeRepository.getAll()
                 .subscribe(storeModels -> {
-                    if (mViewHolder != null) {
-                        mViewHolder.showStores(storeModels);
+                    if (viewHolder != null) {
+                        viewHolder.showStores(storeModels);
                     }
                 });
         subscriptions.add(subscription);
@@ -62,46 +61,45 @@ public class StorePresenter extends BasePresenter {
         subscriptions.unsubscribe();
     }
 
-    public void setViewHolder(StoreViewHolder viewHolder) {
-        mViewHolder = viewHolder;
-        if (mViewHolder != null) {
-            mViewHolder.setOnClickListener(onViewHolderClickListener);
+    @NonNull
+    @Override
+    public BasePresenter setViewHolder(@Nullable StoreViewHolder storeViewHolder) {
+        super.setViewHolder(storeViewHolder);
+        if (viewHolder != null) {
+            viewHolder.setOnClickListener(onViewHolderClickListener);
         }
-    }
-
-    public void setView(StoreView view) {
-        mView = view;
+        return this;
     }
 
     private final StoreViewHolder.OnClickListener onViewHolderClickListener = new StoreViewHolder.OnClickListener() {
         @Override
         public void onCreateStoreClick() {
-            if (mView != null) {
-                mView.onCreateStoreOpen();
+            if (view != null) {
+                view.onCreateStoreOpen();
             }
         }
 
         @Override
         public void onRemoveItem(StoreModel store, int position) {
-            if (dataRepository.canStoreRemoved(store.getId())) {
-                dataRepository.removeStore(store.getId());
-            } else {
-                mViewHolder.insertItem(position)
+            if (storeRepository.canStoreRemoved(store.getId())) {
+                storeRepository.asyncRemoveStore(store.getId());
+            } else if (viewHolder != null) {
+                viewHolder.insertItem(position)
                         .showMessage(R.string.error_store_used_removed);
             }
         }
 
         @Override
         public void onItemClick(StoreModel store) {
-            if (mView != null) {
-                mView.onStoreOpen(store.getId());
+            if (view != null) {
+                view.onStoreOpen(store.getId());
             }
         }
 
         @Override
         public void onNavBackClick() {
-            if (mView != null) {
-                mView.onFinish();
+            if (view != null) {
+                view.onFinish();
             }
         }
     };

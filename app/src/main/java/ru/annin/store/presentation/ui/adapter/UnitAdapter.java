@@ -23,14 +23,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ru.annin.store.R;
 import ru.annin.store.domain.model.UnitModel;
 
+import static android.R.attr.name;
+
 /**
- * <p> Адаптер единиц измерения. </p>
+ * <p> Адаптер "Единиц измерения". </p>
  *
  * @author Pavel Annin.
  */
@@ -53,8 +52,8 @@ public class UnitAdapter extends RealmRecyclerAdapter<UnitModel, UnitAdapter.Vie
     public void onBindViewHolder(ViewHolder holder, int position) {
         final UnitModel unit = mRealmResults.get(position);
         if (unit != null && unit.isValid()) {
-            holder.showName(unit.getName(), unit.getSymbol())
-                    .showDescription(unit.getDescription());
+            holder.showName(unit.getName())
+                    .showSymbol(unit.getSymbol());
         }
     }
 
@@ -69,27 +68,26 @@ public class UnitAdapter extends RealmRecyclerAdapter<UnitModel, UnitAdapter.Vie
     class ViewHolder extends RecyclerView.ViewHolder {
 
         // View's
-        @Bind(R.id.txt_title)
-        TextView txtTitle;
-        @Bind(R.id.txt_description)
-        TextView txtDescription;
+        private final TextView txtName;
+        private final TextView txtSymbol;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            txtName = (TextView) itemView.findViewById(R.id.txt_name_unit);
+            txtSymbol = (TextView) itemView.findViewById(R.id.txt_symbol_unit);
+            itemView.setOnClickListener(v -> onItemClick());
         }
 
-        public ViewHolder showName(String name, String symbol) {
-            txtTitle.setText(txtTitle.getResources().getString(R.string.msg_unit_item_name_format, name, symbol));
+        public ViewHolder showName(String text) {
+            txtName.setText(text);
             return this;
         }
 
-        public ViewHolder showDescription(@NonNull final String text) {
-            txtDescription.setText(text);
+        public ViewHolder showSymbol(@NonNull final String text) {
+            txtSymbol.setText(text);
             return this;
         }
 
-        @OnClick(R.id.main_item)
         void onItemClick() {
             if (listener != null) {
                 listener.onItemClick(mRealmResults.get(getAdapterPosition()));

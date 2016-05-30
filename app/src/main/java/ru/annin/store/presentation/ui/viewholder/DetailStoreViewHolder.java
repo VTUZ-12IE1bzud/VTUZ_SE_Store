@@ -22,42 +22,34 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import ru.annin.store.R;
 import ru.annin.store.presentation.common.BaseViewHolder;
 
 /**
- * ViewHolder экрана склад.
+ * <p>ViewHolder экрана "Склад".</p>
  *
  * @author Pavel Annin.
  */
 public class DetailStoreViewHolder extends BaseViewHolder {
 
     // View's
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.til_name)
-    TextInputLayout tilName;
-    @Bind(R.id.edt_name)
-    EditText edtName;
+    private final Toolbar toolbar;
+    private final TextInputLayout tilName;
+    private final EditText edtName;
 
     // Listener's
     private OnClickListener listener;
 
     public DetailStoreViewHolder(@NonNull View view) {
         super(view);
-        ButterKnife.bind(this, view);
+        toolbar = (Toolbar) vRoot.findViewById(R.id.toolbar);
+        tilName = (TextInputLayout) vRoot.findViewById(R.id.til_name);
+        edtName = (EditText) vRoot.findViewById(R.id.edt_name);
+
         // Setup
         toolbar.setNavigationOnClickListener(onNavigationClickListener);
         toolbar.inflateMenu(R.menu.menu_store_detail);
         toolbar.setOnMenuItemClickListener(onMenuItemClickListener);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     public DetailStoreViewHolder errorName(String text) {

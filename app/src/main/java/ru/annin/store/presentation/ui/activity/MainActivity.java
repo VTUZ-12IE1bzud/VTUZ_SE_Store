@@ -17,96 +17,62 @@
 package ru.annin.store.presentation.ui.activity;
 
 import android.os.Bundle;
-import android.view.View;
 
-import javax.inject.Inject;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import ru.annin.store.R;
+import ru.annin.store.data.repository.SettingsRepositoryImpl;
+import ru.annin.store.data.repository.StoreRepositoryImpl;
+import ru.annin.store.presentation.common.BaseActivity;
 import ru.annin.store.presentation.presenter.MainPresenter;
 import ru.annin.store.presentation.ui.view.MainView;
 import ru.annin.store.presentation.ui.viewholder.MainViewHolder;
 
 /**
- * Главный экран.
+ * <p>Главный экран.</p>
  *
  * @author Pavel Annin.
  */
-public class MainActivity extends BaseActivity implements MainView {
-
-    @Inject
-    MainPresenter mPresenter;
-    @Bind(R.id.drawer_layout)
-    View mainView;
-    private MainViewHolder mViewHolder;
+public class MainActivity extends BaseActivity<MainPresenter> implements MainView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getApplicationComponent().inject(this);
-        ButterKnife.bind(this);
-        mViewHolder = new MainViewHolder(this, mainView);
-        mPresenter.setViewHolder(mViewHolder);
-        mPresenter.setView(this);
-        mPresenter.onInitialization();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mPresenter.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mPresenter.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mPresenter.onDestroy();
-        mViewHolder.onDestroyView();
-        ButterKnife.unbind(this);
+        MainViewHolder viewHolder = new MainViewHolder(this, findViewById(R.id.drawer_layout));
+        presenter = new MainPresenter(new StoreRepositoryImpl(), new SettingsRepositoryImpl(this));
+        presenter.setViewHolder(viewHolder);
+        presenter.setView(this);
+        presenter.onInitialization();
     }
 
     @Override
     public void onBackPressed() {
-        if (mPresenter.onBackPress()) {
+        if (presenter != null && presenter.onBackPress()) {
             super.onBackPressed();
         }
     }
 
     @Override
-    public void onGitHubOpen() {
-        mNavigator.navigate2GitHub(this);
+    public void onInvoiceOpen() {
+        navigator.navigate2Invoice(this);
     }
 
     @Override
-    public void onReceiptProductInvoiceOpen() {
-        mNavigator.navigate2ReceiptProductInvoice(this);
-    }
-
-    @Override
-    public void onCardProductsOpen() {
-        mNavigator.navigate2CardProducts(this);
+    public void onNomenclatureOpen() {
+        navigator.navigate2Nomenclature(this);
     }
 
     @Override
     public void onStoresOpen() {
-        mNavigator.navigate2Stores(this);
+        navigator.navigate2Stores(this);
     }
 
     @Override
     public void onUnitsOpen() {
-        mNavigator.navigate2Units(this);
+        navigator.navigate2Units(this);
     }
 
     @Override
     public void onAboutOpen() {
-        mNavigator.navigate2About(this);
+        navigator.navigate2About(this);
     }
 }

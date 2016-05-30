@@ -21,39 +21,30 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import ru.annin.store.R;
 import ru.annin.store.presentation.common.BaseViewHolder;
 
 /**
- * View Holder экрана "О программе".
+ * <p>View Holder экрана "О программе".</p>
  *
  * @author Pavel Annin.
  */
 public class AboutViewHolder extends BaseViewHolder {
 
     // View's
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.txt_app_version)
-    TextView txtAppVersion;
+    private final Toolbar toolbar;
+    private final TextView txtAppVersion;
 
     // Listener's
     private OnClickListener mListener;
 
     public AboutViewHolder(@NonNull final View view) {
         super(view);
-        ButterKnife.bind(this, view);
+        toolbar = (Toolbar) vRoot.findViewById(R.id.toolbar);
+        txtAppVersion = (TextView) vRoot.findViewById(R.id.txt_app_version);
 
         // Setup
         toolbar.setNavigationOnClickListener(onNavigationClickListener);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     /**
@@ -64,7 +55,7 @@ public class AboutViewHolder extends BaseViewHolder {
      */
     public void showAppVersion(@NonNull final String appVersion, int appBuild) {
         if (txtAppVersion != null) {
-            txtAppVersion.setText(mResources.getString(R.string.title_app_version_format, appVersion, appBuild));
+            txtAppVersion.setText(getString(R.string.title_app_version_format, appVersion, appBuild));
         }
     }
 

@@ -1,39 +1,37 @@
-/*
- * Copyright 2016, Pavel Annin
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package ru.annin.store.presentation.common;
 
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.view.View;
 
 /**
- * Базовый BaseViewHolder.
+ * <p>Базовый ViewHolder.</p>
  *
- * @author Pavel Annin.
+ * @author Pavel Annin, 2016.
  */
 public abstract class BaseViewHolder {
 
-    protected final Resources mResources;
+    @NonNull
+    protected final View vRoot;
 
-    public BaseViewHolder(@NonNull final View view) {
-        mResources = view.getResources();
+    public BaseViewHolder(@NonNull View view) {
+        vRoot = view;
     }
 
-    public void onDestroyView() {
-        // Empty
+    /** @see android.content.Context#getString(int) */
+    @NonNull
+    public final String getString(@StringRes int resId) {
+        return vRoot.getContext().getString(resId);
+    }
+
+    /** @see android.content.Context#getString(int, Object...) */
+    @NonNull
+    public final String getString(@StringRes int resId, Object... formatArgs) {
+        return vRoot.getContext().getString(resId, formatArgs);
+    }
+
+    /** @see android.content.Context#getColor(int) */
+    public final int getColor(int id) {
+        return vRoot.getResources().getColor(id);
     }
 }

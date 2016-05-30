@@ -16,30 +16,45 @@
 
 package ru.annin.store.presentation.presenter;
 
-import javax.inject.Inject;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import ru.annin.store.domain.repository.SettingsRepository;
+import ru.annin.store.domain.repository.StoreRepository;
 import ru.annin.store.presentation.common.BasePresenter;
 import ru.annin.store.presentation.ui.view.MainView;
 import ru.annin.store.presentation.ui.viewholder.MainViewHolder;
 import ru.annin.store.presentation.ui.viewholder.MainViewHolder.OnClickListener;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.subscriptions.CompositeSubscription;
 
 /**
- * Presenter главного экрана.
+ * <p>Presenter главного экрана.</p>
  *
  * @author Pavel Annin.
  */
-public class MainPresenter extends BasePresenter {
+public class MainPresenter extends BasePresenter<MainViewHolder, MainView> {
 
-    private MainViewHolder mViewHolder;
-    private MainView mView;
+    // Repository
+    private final StoreRepository storeRepository;
+    private final SettingsRepository settingsRepository;
 
-    @Inject
-    public MainPresenter() {
-        // Empty
+    private final CompositeSubscription subscription;
+
+    public MainPresenter(@NonNull StoreRepository storeRepository,
+                         @NonNull SettingsRepository settingsRepository) {
+        this.storeRepository = storeRepository;
+        this.settingsRepository = settingsRepository;
+        subscription = new CompositeSubscription();
     }
 
     public void onInitialization() {
-
+        Subscription sub = storeRepository.getAll()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(models -> {if (viewHolder != null) viewHolder.showStore(models,
+                        settingsRepository.getSelectStoreId());});
+        subscription.add(sub);
     }
 
     /**
@@ -47,71 +62,78 @@ public class MainPresenter extends BasePresenter {
      * @return Если {@code true} выполнить стандартное действие, иначе ничего не выполнять.
      */
     public boolean onBackPress() {
-        if (mViewHolder != null && mViewHolder.isNavigationShowing()) {
-            mViewHolder.hideNavigation();
+        if (viewHolder != null && viewHolder.isNavigationShowing()) {
+            viewHolder.hideNavigation();
             return false;
         }
         return true;
     }
 
-    public void setViewHolder(MainViewHolder viewHolder) {
-        mViewHolder = viewHolder;
-        if (mViewHolder != null) {
-            mViewHolder.setOnClickListener(onHolderListener);
+    @NonNull
+    @Override
+    public BasePresenter setViewHolder(@Nullable MainViewHolder mainViewHolder) {
+        super.setViewHolder(mainViewHolder);
+        if (viewHolder != null) {
+            viewHolder.setOnClickListener(onHolderListener);
         }
-    }
-
-    public void setView(MainView view) {
-        mView = view;
+        return this;
     }
 
     private final OnClickListener onHolderListener = new OnClickListener() {
+
         @Override
-        public void onGitHubClick() {
-            mViewHolder.hideNavigation();
-            if (mView != null) {
-                mView.onGitHubOpen();
+        public void onNavInvoiceClick() {
+            if (viewHolder != null) {
+                viewHolder.hideNavigation();
+            }
+            if (view != null) {
+                view.onInvoiceOpen();
             }
         }
 
         @Override
-        public void onReceiptProductInvoiceClick() {
-            mViewHolder.hideNavigation();
-            if (mView != null) {
-                mView.onReceiptProductInvoiceOpen();
+        public void onNavNomenclatureClick() {
+            if (viewHolder != null) {
+                viewHolder.hideNavigation();
+            }
+            if (view != null) {
+                view.onNomenclatureOpen();
             }
         }
 
         @Override
-        public void onCardProductClick() {
-            mViewHolder.hideNavigation();
-            if (mView != null) {
-                mView.onCardProductsOpen();
+        public void onNavStoreClick() {
+            if (viewHolder != null) {
+                viewHolder.hideNavigation();
+            }
+            if (view != null) {
+                view.onStoresOpen();
             }
         }
 
         @Override
-        public void onStoreClick() {
-            mViewHolder.hideNavigation();
-            if (mView != null) {
-                mView.onStoresOpen();
+        public void onNavUnitsClick() {
+            if (viewHolder != null) {
+                viewHolder.hideNavigation();
+            }
+            if (view != null) {
+                view.onUnitsOpen();
             }
         }
 
         @Override
-        public void onUnitsClick() {
-            mViewHolder.hideNavigation();
-            if (mView != null) {
-                mView.onUnitsOpen();
+        public void onNavAboutClick() {
+            if (viewHolder != null) {
+                viewHolder.hideNavigation();
+            }
+            if (view != null) {
+                view.onAboutOpen();
             }
         }
 
         @Override
-        public void onAboutClick() {
-            mViewHolder.hideNavigation();
-            if (mView != null) {
-                mView.onAboutOpen();
-            }
+        public void onStoreSelect(String storeId) {
+            settingsRepository.saveStoreId(storeId);
         }
     };
 }

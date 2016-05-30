@@ -19,13 +19,10 @@ package ru.annin.store.presentation.ui.activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.View;
 
-import javax.inject.Inject;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import ru.annin.store.R;
+import ru.annin.store.data.repository.StoreRepositoryImpl;
+import ru.annin.store.presentation.common.BaseActivity;
 import ru.annin.store.presentation.presenter.StorePresenter;
 import ru.annin.store.presentation.ui.view.StoreView;
 import ru.annin.store.presentation.ui.viewholder.StoreViewHolder;
@@ -35,54 +32,27 @@ import ru.annin.store.presentation.ui.viewholder.StoreViewHolder;
  *
  * @author Pavel Annin.
  */
-public class StoreActivity extends BaseActivity implements StoreView {
-
-    @Inject
-    StorePresenter mPresenter;
-    @Bind(R.id.main_container)
-    View mainView;
-    private StoreViewHolder mViewHolder;
+public class StoreActivity extends BaseActivity<StorePresenter> implements StoreView {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
-        getApplicationComponent().inject(this);
-        ButterKnife.bind(this);
-        mViewHolder = new StoreViewHolder(mainView);
-        mPresenter.setViewHolder(mViewHolder);
-        mPresenter.setView(this);
-        mPresenter.onInitialization();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mPresenter.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mPresenter.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mPresenter.onDestroy();
-        mViewHolder.onDestroyView();
-        ButterKnife.unbind(this);
+        StoreViewHolder viewHolder = new StoreViewHolder(findViewById(R.id.main_container));
+        presenter = new StorePresenter(new StoreRepositoryImpl());
+        presenter.setViewHolder(viewHolder);
+        presenter.setView(this);
+        presenter.onInitialization();
     }
 
     @Override
     public void onCreateStoreOpen() {
-        mNavigator.navigate2CreateStore(this);
+        navigator.navigate2CreateStore(this);
     }
 
     @Override
     public void onStoreOpen(@NonNull String storeId) {
-        mNavigator.navigate2OpenStore(this, storeId);
+        navigator.navigate2OpenStore(this, storeId);
     }
 
     @Override

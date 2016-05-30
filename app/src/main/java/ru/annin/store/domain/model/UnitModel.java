@@ -21,7 +21,7 @@ import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
 
 /**
- * <p>Модель данных единицы измерения.</p>
+ * <p>Модель данных: "Единица измерения".</p>
  *
  * @author Pavel Annin.
  */
@@ -31,13 +31,11 @@ public class UnitModel extends RealmObject {
     public static final String FIELD_ID = "id";
     public static final String FIELD_NAME = "name";
     public static final String FIELD_SYMBOL = "symbol";
-    public static final String FIELD_DESCRIPTION = "description";
 
     @PrimaryKey
     private String id;
     private String name;
     private String symbol;
-    private String description;
 
     public UnitModel() {
         // Empty.
@@ -65,13 +63,5 @@ public class UnitModel extends RealmObject {
 
     public void setSymbol(String symbol) {
         this.symbol = symbol;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

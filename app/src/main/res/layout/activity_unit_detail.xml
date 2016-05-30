@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     tools:context=".presentation.ui.activity.DetailUnitActivity">
 
-    <include layout="@layout/particle_unit_detail" />
+    <include layout="@layout/content_unit_detail" />
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

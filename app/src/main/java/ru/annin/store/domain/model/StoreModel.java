@@ -21,7 +21,7 @@ import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
 
 /**
- * <p>Модель данных склада.</p>
+ * <p>Модель данных: "Склад".</p>
  *
  * @author Pavel Annin.
  */

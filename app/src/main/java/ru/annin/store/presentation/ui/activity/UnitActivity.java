@@ -19,70 +19,40 @@ package ru.annin.store.presentation.ui.activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.View;
 
-import javax.inject.Inject;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import ru.annin.store.R;
+import ru.annin.store.data.repository.UnitRepositoryImpl;
+import ru.annin.store.presentation.common.BaseActivity;
 import ru.annin.store.presentation.presenter.UnitPresenter;
 import ru.annin.store.presentation.ui.view.UnitView;
 import ru.annin.store.presentation.ui.viewholder.UnitViewHolder;
 
 /**
- * Экран "Единиц измерения".
+ * <p>Экран "Единиц измерения".</p>
  *
  * @author Pavel Annin.
  */
-public class UnitActivity extends BaseActivity implements UnitView {
-
-    @Inject
-    UnitPresenter mPresenter;
-    @Bind(R.id.main_container)
-    View mainView;
-    private UnitViewHolder mViewHolder;
+public class UnitActivity extends BaseActivity<UnitPresenter> implements UnitView {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unit);
-        getApplicationComponent().inject(this);
-        ButterKnife.bind(this);
-        mViewHolder = new UnitViewHolder(mainView);
-        mPresenter.setViewHolder(mViewHolder);
-        mPresenter.setView(this);
-        mPresenter.onInitialization();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mPresenter.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mPresenter.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mPresenter.onDestroy();
-        mViewHolder.onDestroyView();
-        ButterKnife.unbind(this);
+        UnitViewHolder viewHolder  = new UnitViewHolder(findViewById(R.id.main_container));
+        presenter = new UnitPresenter(new UnitRepositoryImpl());
+        presenter.setViewHolder(viewHolder);
+        presenter.setView(this);
+        presenter.onInitialization();
     }
 
     @Override
     public void onCreateUnitOpen() {
-        mNavigator.navigate2CreateUnit(this);
+        navigator.navigate2CreateUnit(this);
     }
 
     @Override
     public void onUnitOpen(@NonNull String unitId) {
-        mNavigator.navigate2OpenUnit(this, unitId);
+        navigator.navigate2OpenUnit(this, unitId);
     }
 
     @Override
