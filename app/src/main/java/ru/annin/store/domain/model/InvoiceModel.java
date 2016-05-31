@@ -15,7 +15,7 @@ import io.realm.annotations.RealmClass;
 @RealmClass
 public class InvoiceModel extends RealmObject {
 
-    public static final String FILED_ID = "id";
+    public static final String FIELD_ID = "id";
     public static final String FILED_NAME = "name";
     public static final String FIELD_DATE = "date";
     public static final String FIELD_STORE = "store";

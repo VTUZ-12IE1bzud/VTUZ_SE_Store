@@ -21,6 +21,10 @@ public class ProductAdapter extends RealmRecyclerAdapter<ProductModel, ProductAd
     // Listener's
     private OnClickListener listener;
 
+    public ProductAdapter(boolean automaticUpdate) {
+        super(automaticUpdate);
+    }
+
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View vItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);

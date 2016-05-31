@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import ru.annin.store.presentation.ui.activity.AboutActivity;
+import ru.annin.store.presentation.ui.activity.DetailInvoiceActivity;
 import ru.annin.store.presentation.ui.activity.DetailNomenclatureActivity;
 import ru.annin.store.presentation.ui.activity.DetailStoreActivity;
 import ru.annin.store.presentation.ui.activity.DetailUnitActivity;
@@ -44,6 +45,18 @@ public class Navigator {
 
     public void navigate2Invoice(@NonNull Context ctx) {
         final Intent intent = new Intent(ctx, InvoiceActivity.class);
+        ctx.startActivity(intent);
+    }
+
+    public void navigate2CreateInvoice(@NonNull Context ctx) {
+        final Intent intent = new Intent(ctx, DetailInvoiceActivity.class);
+        ctx.startActivity(intent);
+    }
+
+    public void navigate2OpenInvoice(@NonNull Context ctx, @NonNull String id) {
+        final Intent intent = new Intent(ctx, DetailInvoiceActivity.class);
+        intent.setAction(Intent.ACTION_EDIT);
+        intent.putExtra(DetailInvoiceActivity.EXTRA_RECEIVER_PRODUCT_ID, id);
         ctx.startActivity(intent);
     }
 

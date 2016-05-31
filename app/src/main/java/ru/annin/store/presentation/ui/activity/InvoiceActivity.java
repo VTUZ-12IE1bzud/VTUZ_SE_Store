@@ -52,11 +52,11 @@ public class InvoiceActivity extends BaseActivity<InvoicePresenter> implements I
 
     @Override
     public void onCreate() {
-        navigator.navigate2CreateUnit(this);
+        navigator.navigate2CreateInvoice(this);
     }
 
     @Override
     public void onOpen(String id) {
-        navigator.navigate2OpenUnit(this, id);
+        navigator.navigate2OpenInvoice(this, id);
     }
 }

@@ -43,6 +43,16 @@
         </activity>
 
         <activity
+            android:name=".presentation.ui.activity.DetailInvoiceActivity"
+            android:label="@string/title_activity_invoice_detail"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".presentation.ui.activity.StoreActivity"
             android:label="@string/title_activity_store"
             android:screenOrientation="portrait">

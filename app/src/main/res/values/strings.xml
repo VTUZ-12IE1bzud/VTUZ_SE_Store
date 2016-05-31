@@ -26,7 +26,7 @@
     <string name="title_nav_drawer_close">Закрыть меню</string>
 
     <!-- Invoice -->
-    <string name="item_price_format">%1$f р.</string>
+    <string name="item_price_format">%1$s р.</string>
 
     <!-- Invoice Detail -->
     <string name="hint_invoice_store">Склад</string>
@@ -35,6 +35,15 @@
     <string name="item_product_price_format">Цена: %1$s р.</string>
     <string name="item_product_amount_format">Количество: %1$s (%2$s)</string>
     <string name="item_product_sum_format">%1$s р.</string>
+    <string name="action_invoice_save">Сохранить</string>
+
+    <!-- Product -->
+    <string name="hint_product_amount">Количество</string>
+    <string name="hint_product_price">Цена</string>
+    <string name="title_alert_product">Товар</string>
+    <string name="action_alert_product_positive">Сохранить</string>
+    <string name="action_alert_product_negative">Отмена</string>
+
 
 
     <!-- Nomenclature -->
@@ -87,5 +96,6 @@
         \n    • RxAndroid v1.2.0 (https://github.com/ReactiveX/RxAndroid), Apache 2.0 license;
         \n    • RetroLambda v3.3.0-beta4 (https://github.com/evant/gradle-retrolambda), Apache 2.0 license.
     </string>
+    <string name="error_field_empty">Заполните поле</string>
 
 </resources>

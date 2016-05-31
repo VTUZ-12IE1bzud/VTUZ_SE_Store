@@ -21,6 +21,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import ru.annin.store.R;
+import ru.annin.store.data.repository.SettingsRepositoryImpl;
 import ru.annin.store.data.repository.StoreRepositoryImpl;
 import ru.annin.store.presentation.common.BaseActivity;
 import ru.annin.store.presentation.presenter.StorePresenter;
@@ -39,7 +40,7 @@ public class StoreActivity extends BaseActivity<StorePresenter> implements Store
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
         StoreViewHolder viewHolder = new StoreViewHolder(findViewById(R.id.main_container));
-        presenter = new StorePresenter(new StoreRepositoryImpl());
+        presenter = new StorePresenter(new StoreRepositoryImpl(), new SettingsRepositoryImpl(this));
         presenter.setViewHolder(viewHolder);
         presenter.setView(this);
         presenter.onInitialization();

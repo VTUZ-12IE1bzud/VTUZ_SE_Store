@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/margin_tiny"
+    android:paddingEnd="@dimen/margin_normal"
+    android:paddingStart="@dimen/margin_normal"
+    android:paddingTop="@dimen/margin_tiny">
+
+    <TextView
+        android:id="@+id/txt_name_product"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        tools:text="Наименование"/>
+
+    <TextView
+        android:id="@+id/txt_unit_product"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:text="Единица измерения"/>
+
+</LinearLayout>

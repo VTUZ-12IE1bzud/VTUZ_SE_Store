@@ -25,6 +25,7 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmMigration;
 import io.realm.RealmSchema;
 import ru.annin.store.R;
+import ru.annin.store.domain.model.InvoiceModel;
 import ru.annin.store.domain.model.NomenclatureModel;
 import ru.annin.store.domain.model.StoreModel;
 import ru.annin.store.domain.model.UnitModel;
@@ -56,10 +57,12 @@ public class RealmUtil {
         String unitJson = ctx.getString(R.string.default_units);
         String storeJson = ctx.getString(R.string.default_store);
         String nomenclatureJson = ctx.getString(R.string.default_nomenclature);
+        String invoice = ctx.getString(R.string.default_invoice);
         getRealm().executeTransactionAsync(realm -> {
             realm.createOrUpdateAllFromJson(UnitModel.class, unitJson);
             realm.createOrUpdateAllFromJson(StoreModel.class, storeJson);
             realm.createOrUpdateAllFromJson(NomenclatureModel.class, nomenclatureJson);
+            realm.createOrUpdateAllFromJson(InvoiceModel.class, invoice);
         });
     }
 

@@ -19,6 +19,7 @@ import io.realm.RealmResults;
 import ru.annin.store.R;
 import ru.annin.store.domain.model.ProductModel;
 import ru.annin.store.presentation.common.BaseViewHolder;
+import ru.annin.store.presentation.ui.adapter.ProductAdapter;
 
 /**
  * <p>ViewHolder экрана "Приходная накладная".</p>
@@ -40,7 +41,7 @@ public class DetailInvoiceViewHolder extends BaseViewHolder {
     private final View vEmpty;
 
     // Adapter's
-    private final ProductListAdapter adapter;
+    private final ProductAdapter adapter;
 
     // Listener's
     private OnInteractionListener listener;
@@ -49,10 +50,8 @@ public class DetailInvoiceViewHolder extends BaseViewHolder {
         super(view);
         vToolbar = (Toolbar) vRoot.findViewById(R.id.toolbar);
         fabAdd = (FloatingActionButton) vRoot.findViewById(R.id.fab_add);
-        tilMovementTo = (TextInputLayout) vRoot.findViewById(R.id.til_movement_to);
-        edtMovementTo = (EditText) vRoot.findViewById(R.id.edt_movement_to);
-        tilNameEmployee = (TextInputLayout) vRoot.findViewById(R.id.til_name_employee);
-        edtNameEmployee = (EditText) vRoot.findViewById(R.id.edt_name_employee);
+        tilStore = (TextInputLayout) vRoot.findViewById(R.id.til_store);
+        edtStore = (EditText) vRoot.findViewById(R.id.edt_store);
         tilDate = (TextInputLayout) vRoot.findViewById(R.id.til_date);
         edtDate = (EditText) vRoot.findViewById(R.id.edt_date);
         tilNameInvoice = (TextInputLayout) vRoot.findViewById(R.id.til_name_invoice);
@@ -61,64 +60,58 @@ public class DetailInvoiceViewHolder extends BaseViewHolder {
         vEmpty = vRoot.findViewById(android.R.id.empty);
 
         // Setup
-        adapter = new ProductListAdapter();
+        adapter = new ProductAdapter(false);
         adapter.setViewEmpty(vEmpty);
         adapter.setOnClickListener(model -> {if (listener != null) listener.onEditProduct(model.getId());});
-        vToolbar.inflateMenu(R.menu.menu_invoice);
+        vToolbar.inflateMenu(R.menu.menu_invoice_detail);
         rcList.setAdapter(adapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(onItemTouchHelper);
         itemTouchHelper.attachToRecyclerView(rcList);
-        RxToolbar.navigationClicks(vToolbar).subscribe(aVoid -> {if (listener != null) listener.onBackClick();});
-        RxToolbar.itemClicks(vToolbar).subscribe(menuItem -> {
+        vToolbar.setNavigationOnClickListener(v -> {if (listener != null) listener.onBackClick();});
+        vToolbar.setOnMenuItemClickListener(item -> {
             if (listener != null) {
-                switch (menuItem.getItemId()) {
+                switch (item.getItemId()) {
                     case R.id.action_save:
                         listener.onSaveClick(edtNameInvoice.getText().toString());
-                        break;
+                        return true;
                     default: break;
                 }
             }
+            return false;
         });
-        RxView.clicks(fabAdd).subscribe(aVoid -> {if (listener != null) listener.onAddClick();});
-        RxView.clicks(edtDate).subscribe(aVoid -> {if (listener != null) listener.onDateClick();});
+        fabAdd.setOnClickListener(v -> {if (listener != null) listener.onAddClick();});
+        edtDate.setOnClickListener(v -> {if (listener != null) listener.onDateClick();});
     }
 
-    public DetailReceiverProductViewHolder enableAnimation(boolean enabled) {
-        tilMovementTo.setHintAnimationEnabled(enabled);
-        tilNameEmployee.setHintAnimationEnabled(enabled);
+    public DetailInvoiceViewHolder enableAnimation(boolean enabled) {
+        tilStore.setHintAnimationEnabled(enabled);
         tilDate.setHintAnimationEnabled(enabled);
         tilNameInvoice.setHintAnimationEnabled(enabled);
         return this;
     }
 
-    public DetailReceiverProductViewHolder showMovementTo(String text) {
-        edtMovementTo.setText(text);
+    public DetailInvoiceViewHolder showMovementTo(String text) {
+        edtStore.setText(text);
         return this;
     }
 
-    public DetailReceiverProductViewHolder showNameEmployee(String surname, String name, String patronymic) {
-        String format = getString(R.string.item_employee_name_list_format, surname, name, patronymic);
-        edtNameEmployee.setText(format);
-        return this;
-    }
-
-    public DetailReceiverProductViewHolder showDate(Date date) {
+    public DetailInvoiceViewHolder showDate(Date date) {
         String format = SimpleDateFormat.getDateInstance(DateFormat.LONG).format(date);
         edtDate.setText(format);
         return this;
     }
 
-    public DetailReceiverProductViewHolder showNameInvoice(String text) {
+    public DetailInvoiceViewHolder showNameInvoice(String text) {
         edtNameInvoice.setText(text);
         return this;
     }
 
-    public DetailReceiverProductViewHolder errorNameInvoice(String text) {
+    public DetailInvoiceViewHolder errorNameInvoice(String text) {
         tilNameInvoice.setError(text);
         return this;
     }
 
-    public DetailReceiverProductViewHolder showDatePicker(Date date) {
+    public DetailInvoiceViewHolder showDatePicker(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         DatePickerDialog dialog = new DatePickerDialog(vRoot.getContext(),
@@ -137,7 +130,7 @@ public class DetailInvoiceViewHolder extends BaseViewHolder {
         return this;
     }
 
-    public DetailReceiverProductViewHolder showProducts(RealmResults<ProductModel> models) {
+    public DetailInvoiceViewHolder showProducts(RealmResults<ProductModel> models) {
         adapter.updateRealmResults(models);
         return this;
     }

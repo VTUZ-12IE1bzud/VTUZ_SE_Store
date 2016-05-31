@@ -48,8 +48,13 @@ public class InvoiceAdapter extends RealmRecyclerAdapter<InvoiceModel, InvoiceAd
             }
             final RealmList<ProductModel> products = model.getProducts();
             if (products != null) {
-                float price = products.sum(ProductModel.FIELD_PRICE).floatValue();
-                holder.showPrice(price);
+                float sum = 0.0f;
+                for (ProductModel product : products) {
+                    float amount = product.getAmount();
+                    float price = product.getPrice();
+                    sum += price * amount;
+                }
+                holder.showPrice(sum);
             }
         }
     }
@@ -98,7 +103,7 @@ public class InvoiceAdapter extends RealmRecyclerAdapter<InvoiceModel, InvoiceAd
         }
 
         public ItemViewHolder showPrice(float price) {
-            String format = txtPrice.getResources().getString(R.string.item_price_format, price);
+            String format = txtPrice.getResources().getString(R.string.item_price_format, Float.toString(price));
             txtPrice.setText(format);
             return this;
         }

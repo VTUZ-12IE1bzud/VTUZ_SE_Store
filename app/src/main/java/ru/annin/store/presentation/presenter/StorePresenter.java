@@ -18,9 +18,11 @@ package ru.annin.store.presentation.presenter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import ru.annin.store.R;
 import ru.annin.store.domain.model.StoreModel;
+import ru.annin.store.domain.repository.SettingsRepository;
 import ru.annin.store.domain.repository.StoreRepository;
 import ru.annin.store.presentation.common.BasePresenter;
 import ru.annin.store.presentation.ui.view.StoreView;
@@ -37,11 +39,14 @@ public class StorePresenter extends BasePresenter<StoreViewHolder, StoreView> {
 
     // Repository
     private final StoreRepository storeRepository;
+    private final SettingsRepository settingsRepository;
 
     private final CompositeSubscription subscriptions;
 
-    public StorePresenter(@NonNull StoreRepository storeRepository){
+    public StorePresenter(@NonNull StoreRepository storeRepository,
+                          @NonNull SettingsRepository settingsRepository){
         this.storeRepository = storeRepository;
+        this.settingsRepository = settingsRepository;
         subscriptions = new CompositeSubscription();
     }
 
@@ -81,7 +86,8 @@ public class StorePresenter extends BasePresenter<StoreViewHolder, StoreView> {
 
         @Override
         public void onRemoveItem(StoreModel store, int position) {
-            if (storeRepository.canStoreRemoved(store.getId())) {
+            if (storeRepository.canStoreRemoved(store.getId())
+                    && !TextUtils.equals(settingsRepository.getSelectStoreId(), store.getId())) {
                 storeRepository.asyncRemoveStore(store.getId());
             } else if (viewHolder != null) {
                 viewHolder.insertItem(position)
