@@ -9,10 +9,10 @@
     <string name="title_activity_unit_detail">Единица измерения</string>
     <string name="title_activity_nomenclature">Номенклатура</string>
     <string name="title_activity_nomenclature_detail">Номенклатура</string>
-
     <string name="title_activity_store">Склады</string>
     <string name="title_activity_store_detail">Склад</string>
     <string name="title_activity_invoice">Товарные накладные</string>
+    <string name="title_activity_invoice_detail">Товарная накладная</string>
 
     <!-- Nav -->
     <string name="title_nav_item_unit">@string/title_activity_unit</string>
@@ -27,6 +27,15 @@
 
     <!-- Invoice -->
     <string name="item_price_format">%1$f р.</string>
+
+    <!-- Invoice Detail -->
+    <string name="hint_invoice_store">Склад</string>
+    <string name="hint_invoice_date">Дата</string>
+    <string name="hint_invoice_name">Номер накладной</string>
+    <string name="item_product_price_format">Цена: %1$s р.</string>
+    <string name="item_product_amount_format">Количество: %1$s (%2$s)</string>
+    <string name="item_product_sum_format">%1$s р.</string>
+
 
     <!-- Nomenclature -->
     <string name="msg_unit_item_name_format">%1$s (%2$s)</string>
