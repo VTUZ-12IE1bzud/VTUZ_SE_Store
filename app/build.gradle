@@ -107,6 +107,9 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.5'
     compile 'io.reactivex:rxandroid:1.2.0'
 
+    // UI
+    compile 'com.github.PhilJay:MPAndroidChart:v2.2.5'
+
     // Test's
     testCompile 'junit:junit:4.12'
 }

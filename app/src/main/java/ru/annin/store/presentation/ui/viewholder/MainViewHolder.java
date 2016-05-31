@@ -16,12 +16,14 @@
 
 package ru.annin.store.presentation.ui.viewholder;
 
-import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -32,6 +34,7 @@ import io.realm.RealmResults;
 import ru.annin.store.R;
 import ru.annin.store.domain.model.StoreModel;
 import ru.annin.store.presentation.common.BaseViewHolder;
+import ru.annin.store.presentation.ui.adapter.ChartPagerAdapter;
 import ru.annin.store.presentation.ui.adapter.StoreSelectAdapter;
 
 /**
@@ -46,6 +49,8 @@ public class MainViewHolder extends BaseViewHolder {
     private final DrawerLayout drawerLayout;
     private final NavigationView navigation;
     private final Spinner spStore;
+    private final TabLayout tabLayout;
+    private final ViewPager pager;
 
     private ActionBarDrawerToggle drawerToggle;
 
@@ -55,12 +60,14 @@ public class MainViewHolder extends BaseViewHolder {
     // Listener's
     private OnClickListener listener;
 
-    public MainViewHolder(@NonNull Activity activity, @NonNull View view) {
+    public MainViewHolder(@NonNull AppCompatActivity activity, @NonNull View view) {
         super(view);
         toolbar = (Toolbar) vRoot.findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) vRoot.findViewById(R.id.drawer_layout);
         navigation = (NavigationView) vRoot.findViewById(R.id.nav);
         spStore = (AppCompatSpinner) navigation.getHeaderView(0).findViewById(R.id.sp_store);
+        tabLayout = (TabLayout) vRoot.findViewById(R.id.tabs);
+        pager = (ViewPager) vRoot.findViewById(R.id.pager_container);
 
         // Setup
         drawerToggle = new ActionBarDrawerToggle(activity, drawerLayout, toolbar,
@@ -71,6 +78,10 @@ public class MainViewHolder extends BaseViewHolder {
         spStore.setOnItemSelectedListener(onStoreListener);
         navigation.setNavigationItemSelectedListener(onNavigationClickListener);
         spStore.setAdapter(storeAdapter);
+
+        ChartPagerAdapter chartPagerAdapter = new ChartPagerAdapter(activity.getSupportFragmentManager());
+        pager.setAdapter(chartPagerAdapter);
+        tabLayout.setupWithViewPager(pager);
     }
 
     public MainViewHolder showStore(RealmResults<StoreModel> data, String selectId) {

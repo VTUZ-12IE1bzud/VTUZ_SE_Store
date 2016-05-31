@@ -4,15 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_save"
-        android:icon="@drawable/ic_check"
-        android:title="@string/action_invoice_save"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/action_doc"
         android:icon="@drawable/ic_nav_doc"
         android:title="@string/action_invoice_save"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
 </menu>

@@ -42,12 +42,19 @@ public class InvoiceViewHolder extends BaseViewHolder {
         // Setup
         adapter = new InvoiceAdapter(false);
         adapter.setViewEmpty(vEmpty);
-        adapter.setOnClickListener(model -> {if (listener != null) listener.onItemClick(model);});
+        adapter.setOnClickListener(model -> {
+            if (listener != null) listener.onItemClick(model);
+        });
         rcList.setAdapter(adapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(onItemTouchHelper);
         itemTouchHelper.attachToRecyclerView(rcList);
-        vToolbar.setNavigationOnClickListener(aVoid -> {if (listener != null) listener.onBackClick();});
-        fabAdd.setOnClickListener(aVoid -> {if (listener != null) listener.onAddClick();});
+        vToolbar.setNavigationOnClickListener(aVoid -> {
+            if (listener != null) listener.onBackClick();
+        });
+        vToolbar.inflateMenu(R.menu.menu_invoice);
+        fabAdd.setOnClickListener(aVoid -> {
+            if (listener != null) listener.onAddClick();
+        });
     }
 
     public InvoiceViewHolder showInvoice(RealmResults<InvoiceModel> model) {
@@ -78,8 +85,11 @@ public class InvoiceViewHolder extends BaseViewHolder {
 
     public interface OnInteractionListener {
         void onBackClick();
+
         void onAddClick();
+
         void onItemClick(InvoiceModel model);
+
         void onRemoveReceiverClick(String receiverId);
     }
 }
