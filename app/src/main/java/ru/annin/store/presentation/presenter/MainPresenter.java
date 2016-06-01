@@ -134,6 +134,9 @@ public class MainPresenter extends BasePresenter<MainViewHolder, MainView> {
         @Override
         public void onStoreSelect(String storeId) {
             settingsRepository.saveStoreId(storeId);
+            if (viewHolder != null) {
+                viewHolder.refreshChart();
+            }
         }
     };
 }

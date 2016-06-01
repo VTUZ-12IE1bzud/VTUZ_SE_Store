@@ -3,10 +3,10 @@ package ru.annin.store.presentation.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -18,18 +18,15 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import ru.annin.store.R;
-import ru.annin.store.data.repository.InvoiceRepositoryImpl;
 import ru.annin.store.data.repository.SettingsRepositoryImpl;
-import ru.annin.store.data.repository.StoreRepositoryImpl;
+import ru.annin.store.domain.model.InvoiceModel;
 import ru.annin.store.domain.model.ProductModel;
+import ru.annin.store.domain.model.StoreModel;
 import ru.annin.store.domain.repository.InvoiceRepository;
 import ru.annin.store.domain.repository.SettingsRepository;
-import ru.annin.store.domain.repository.StoreRepository;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.subscriptions.CompositeSubscription;
 
 import static ru.annin.store.R.id.chart;
 
@@ -39,22 +36,19 @@ import static ru.annin.store.R.id.chart;
  * @author Pavel Annin, 2016.
  */
 
-public class StorePriceChartFragment extends Fragment {
+public class StorePriceChartFragment extends BaseChartFragment {
 
     // Repository
-    private StoreRepository storeRepository;
-    private InvoiceRepository invoiceRepository;
     private SettingsRepository settingsRepository;
 
     // View's
     private BarChart vChart;
+    private TextView vEmpty;
 
     // Data's
     private List<String> chartInvoices;
     private List<IBarDataSet> chartSumPrice;
     private BarData chartData;
-
-    private CompositeSubscription subscription;
 
     public static StorePriceChartFragment newInstance() {
         return new StorePriceChartFragment();
@@ -63,10 +57,7 @@ public class StorePriceChartFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        storeRepository = new StoreRepositoryImpl();
-        invoiceRepository = new InvoiceRepositoryImpl();
         settingsRepository = new SettingsRepositoryImpl(getActivity());
-        subscription = new CompositeSubscription();
         chartInvoices = new ArrayList<>();
         chartSumPrice = new ArrayList<>();
         chartData = new BarData(chartInvoices, chartSumPrice);
@@ -75,48 +66,62 @@ public class StorePriceChartFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_store_price_chart, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_store_price_chart, container, false);
         vChart = (BarChart) view.findViewById(chart);
+        vEmpty = (TextView) view.findViewById(R.id.txt_empty);
         vChart.setDescription(null);
         vChart.setData(chartData);
+        vEmpty.setVisibility(View.GONE);
+        return view;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateChart();
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        Subscription sub = storeRepository.getById(settingsRepository.getSelectStoreId())
-                .flatMap(model -> invoiceRepository.getByStore(model.getId()))
-                .flatMap(Observable::from)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(invoice -> {
-                    Float sum = 0.0f;
-                    for (ProductModel product : invoice.getProducts()) {
-                        float price = product.getPrice();
-                        float amount = product.getAmount();
-                        sum += price * amount;
-                    }
+    public void updateChart() {
+        if (vChart != null && vEmpty != null) {
+            vChart.setVisibility(View.GONE);
+            vEmpty.setVisibility(View.GONE);
+            chartInvoices.clear();
+            chartSumPrice.clear();
 
-                    ArrayList<BarEntry> entries = new ArrayList<>();
-                    chartInvoices.add(invoice.getName());
-                    entries.add(new BarEntry(sum, chartInvoices.size() - 1));
-                    BarDataSet ds = new BarDataSet(entries, invoice.getName());
-                    ds.setColors(ColorTemplate.VORDIPLOM_COLORS);
-                    chartSumPrice.add(ds);
-                    chartData.notifyDataChanged();
-                    vChart.notifyDataSetChanged();
-                    vChart.invalidate();
-                });
-        subscription.add(sub);
-    }
+            RealmResults<InvoiceModel> invoices = Realm.getDefaultInstance().where(InvoiceModel.class)
+                    .equalTo(InvoiceModel.FIELD_STORE + "." + StoreModel.FIELD_ID, settingsRepository.getSelectStoreId())
+                    .notEqualTo(InvoiceModel.FIELD_ID, InvoiceRepository.TEMP_RECEIVER_PRODUCT_ID)
+                    .findAll();
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        subscription.unsubscribe();
+            for (InvoiceModel model : invoices) {
+                Float sum = 0.0f;
+                for (ProductModel product : model.getProducts()) {
+                    float price = product.getPrice();
+                    float amount = product.getAmount();
+                    sum += price * amount;
+                }
+
+                ArrayList<BarEntry> entries = new ArrayList<>();
+                chartInvoices.add(model.getName());
+                entries.add(new BarEntry(sum, chartInvoices.size() - 1));
+                BarDataSet ds = new BarDataSet(entries, model.getName());
+                ds.setColors(ColorTemplate.MATERIAL_COLORS);
+                chartSumPrice.add(ds);
+            }
+
+            chartData.notifyDataChanged();
+            vChart.notifyDataSetChanged();
+            vChart.invalidate();
+
+            if (!chartSumPrice.isEmpty() && !chartInvoices.isEmpty()) {
+                vChart.setVisibility(View.VISIBLE);
+                vEmpty.setVisibility(View.GONE);
+            } else {
+                vChart.setVisibility(View.GONE);
+                vEmpty.setVisibility(View.VISIBLE);
+            }
+        }
     }
 }

@@ -19,6 +19,7 @@ package ru.annin.store.presentation.ui.viewholder;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -26,6 +27,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
@@ -36,6 +38,7 @@ import ru.annin.store.domain.model.StoreModel;
 import ru.annin.store.presentation.common.BaseViewHolder;
 import ru.annin.store.presentation.ui.adapter.ChartPagerAdapter;
 import ru.annin.store.presentation.ui.adapter.StoreSelectAdapter;
+import ru.annin.store.presentation.ui.fragment.BaseChartFragment;
 
 /**
  * BaseViewHolder главного экрана.
@@ -53,6 +56,7 @@ public class MainViewHolder extends BaseViewHolder {
     private final ViewPager pager;
 
     private ActionBarDrawerToggle drawerToggle;
+    private final ChartPagerAdapter chartPagerAdapter;
 
     // Adapter's
     private final StoreSelectAdapter storeAdapter;
@@ -79,7 +83,7 @@ public class MainViewHolder extends BaseViewHolder {
         navigation.setNavigationItemSelectedListener(onNavigationClickListener);
         spStore.setAdapter(storeAdapter);
 
-        ChartPagerAdapter chartPagerAdapter = new ChartPagerAdapter(activity.getSupportFragmentManager());
+        chartPagerAdapter = new ChartPagerAdapter(activity.getSupportFragmentManager());
         pager.setAdapter(chartPagerAdapter);
         tabLayout.setupWithViewPager(pager);
     }
@@ -103,6 +107,17 @@ public class MainViewHolder extends BaseViewHolder {
 
     public MainViewHolder hideNavigation() {
         drawerLayout.closeDrawer(GravityCompat.START);
+        return this;
+    }
+
+    public MainViewHolder refreshChart() {
+        SparseArray<Fragment> fragments = chartPagerAdapter.getRegisteredFragments();
+        for (int i = 0; i < fragments.size(); ++i) {
+            Fragment fragment = fragments.get(i);
+            if (fragment != null && fragment instanceof BaseChartFragment) {
+                ((BaseChartFragment) fragment).updateChart();
+            }
+        }
         return this;
     }
 

@@ -133,6 +133,7 @@ public class DetailProductAlert extends DialogFragment {
                             amount = model.getAmount();
                             price = model.getPrice();
                             edtAmount.setText(Float.toString(amount));
+                            edtPrice.setText(Float.toString(price));
                             final NomenclatureModel nomenclature = model.getNomenclature();
                             if (nomenclature != null && nomenclature.isValid()) {
                                 nomenclatureId = nomenclature.getId();
