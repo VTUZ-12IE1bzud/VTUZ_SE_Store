@@ -6,7 +6,9 @@ import android.text.TextUtils;
 
 import java.util.Date;
 
+import io.realm.Realm;
 import ru.annin.store.R;
+import ru.annin.store.domain.model.InvoiceModel;
 import ru.annin.store.domain.model.ProductModel;
 import ru.annin.store.domain.model.StoreModel;
 import ru.annin.store.domain.repository.InvoiceRepository;
@@ -17,6 +19,7 @@ import ru.annin.store.presentation.common.BasePresenter;
 import ru.annin.store.presentation.ui.alert.DetailProductAlert;
 import ru.annin.store.presentation.ui.view.DetailInvoiceView;
 import ru.annin.store.presentation.ui.viewholder.DetailInvoiceViewHolder;
+import ru.annin.store.presentation.util.ReportUtil;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -61,6 +64,7 @@ public class DetailInvoicePresenter extends BasePresenter<DetailInvoiceViewHolde
         isCreate = true;
         if (viewHolder != null) {
             viewHolder.enableAnimation(false)
+                    .hideReportAction()
                     .showDate(date);
         }
         Subscription subOrganizationUnit = storeRepository
@@ -97,6 +101,7 @@ public class DetailInvoicePresenter extends BasePresenter<DetailInvoiceViewHolde
                         viewHolder.enableAnimation(false)
                                 .showNameInvoice(model.getName())
                                 .showDate(date)
+                                .showReportAction()
                                 .showProducts(model.getProducts().where().findAll());
                         final StoreModel store = model.getStore();
                         if (store != null && store.isValid()) {
@@ -191,6 +196,25 @@ public class DetailInvoicePresenter extends BasePresenter<DetailInvoiceViewHolde
             date = d;
             if (viewHolder != null) {
                 viewHolder.showDate(date);
+            }
+        }
+
+        @Override
+        public void onReportClick() {
+            String store = Realm.getDefaultInstance()
+                    .where(StoreModel.class)
+                    .equalTo(StoreModel.FIELD_ID, settingsRepository.getSelectStoreId())
+                    .findFirst()
+                    .getName();
+            InvoiceModel model = Realm.getDefaultInstance()
+                    .where(InvoiceModel.class)
+                    .equalTo(InvoiceModel.FIELD_ID , receiverProductId)
+                    .findFirst();
+            boolean b = ReportUtil.createInvoiceReport(store, model);
+            if (b) {
+                viewHolder.showMessage("Отчет сохранен, в директорию документы");
+            } else {
+                viewHolder.showMessage("Ошибка сохранения отчета");
             }
         }
     };

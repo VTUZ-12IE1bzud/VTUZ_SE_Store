@@ -3,17 +3,21 @@ package ru.annin.store.presentation.presenter;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import ru.annin.store.domain.model.InvoiceModel;
+import ru.annin.store.domain.model.StoreModel;
 import ru.annin.store.domain.repository.InvoiceRepository;
 import ru.annin.store.domain.repository.SettingsRepository;
 import ru.annin.store.presentation.common.BasePresenter;
 import ru.annin.store.presentation.ui.view.InvoiceView;
 import ru.annin.store.presentation.ui.viewholder.InvoiceViewHolder;
+import ru.annin.store.presentation.util.ReportUtil;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static ru.annin.store.presentation.ui.viewholder.InvoiceViewHolder.*;
+import static ru.annin.store.presentation.ui.viewholder.InvoiceViewHolder.OnInteractionListener;
 
 
 /**
@@ -83,6 +87,26 @@ public class InvoicePresenter extends BasePresenter<InvoiceViewHolder, InvoiceVi
         @Override
         public void onRemoveReceiverClick(String receiverId) {
             invoiceRepository.asyncRemove(receiverId);
+        }
+
+        @Override
+        public void onReportClick() {
+            String store = Realm.getDefaultInstance()
+                    .where(StoreModel.class)
+                    .equalTo(StoreModel.FIELD_ID, settingsRepository.getSelectStoreId())
+                    .findFirst()
+                    .getName();
+            RealmResults<InvoiceModel> models = Realm.getDefaultInstance()
+                    .where(InvoiceModel.class)
+                    .equalTo(InvoiceModel.FIELD_STORE + "." + StoreModel.FIELD_ID, settingsRepository.getSelectStoreId())
+                    .notEqualTo(InvoiceModel.FIELD_ID, InvoiceRepository.TEMP_RECEIVER_PRODUCT_ID)
+                    .findAllSorted(InvoiceModel.FIELD_DATE);
+            boolean b = ReportUtil.createInvoicesReport(store, models);
+            if (b) {
+                viewHolder.showMessage("Отчет сохранен, в директорию документы");
+            } else {
+                viewHolder.showMessage("Ошибка сохранения отчета");
+            }
         }
     };
 }

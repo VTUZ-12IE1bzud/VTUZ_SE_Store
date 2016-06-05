@@ -34,4 +34,6 @@ public abstract class BaseViewHolder {
     public final int getColor(int id) {
         return vRoot.getResources().getColor(id);
     }
+
+
 }

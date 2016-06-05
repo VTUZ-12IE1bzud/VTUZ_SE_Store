@@ -3,6 +3,7 @@ package ru.annin.store.presentation.ui.viewholder;
 import android.app.DatePickerDialog;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -71,6 +72,9 @@ public class DetailInvoiceViewHolder extends BaseViewHolder {
         vToolbar.setOnMenuItemClickListener(item -> {
             if (listener != null) {
                 switch (item.getItemId()) {
+                    case R.id.action_doc:
+                        listener.onReportClick();
+                        return true;
                     case R.id.action_save:
                         listener.onSaveClick(edtNameInvoice.getText().toString());
                         return true;
@@ -135,6 +139,16 @@ public class DetailInvoiceViewHolder extends BaseViewHolder {
         return this;
     }
 
+    public DetailInvoiceViewHolder showReportAction() {
+        vToolbar.getMenu().findItem(R.id.action_doc).setVisible(true);
+        return this;
+    }
+
+    public DetailInvoiceViewHolder hideReportAction() {
+        vToolbar.getMenu().findItem(R.id.action_doc).setVisible(false);
+        return this;
+    }
+
     public void setOnInteractionListener(OnInteractionListener listener) {
         this.listener = listener;
     }
@@ -156,6 +170,11 @@ public class DetailInvoiceViewHolder extends BaseViewHolder {
         }
     };
 
+    public DetailInvoiceViewHolder showMessage(String text) {
+        Snackbar.make(vRoot, text, Snackbar.LENGTH_LONG).show();
+        return this;
+    }
+
     public interface OnInteractionListener {
         void onBackClick();
         void onSaveClick(String invoice);
@@ -164,5 +183,6 @@ public class DetailInvoiceViewHolder extends BaseViewHolder {
         void onRemoveProduct(String productId);
         void onDateClick();
         void onDateSelect(Date date);
+        void onReportClick();
     }
 }

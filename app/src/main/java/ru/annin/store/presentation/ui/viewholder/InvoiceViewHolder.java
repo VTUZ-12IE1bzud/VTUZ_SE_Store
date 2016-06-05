@@ -2,6 +2,7 @@ package ru.annin.store.presentation.ui.viewholder;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -52,6 +53,16 @@ public class InvoiceViewHolder extends BaseViewHolder {
             if (listener != null) listener.onBackClick();
         });
         vToolbar.inflateMenu(R.menu.menu_invoice);
+        vToolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_doc:
+                    if (listener != null) {
+                        listener.onReportClick();
+                    }
+                    return true;
+            }
+            return false;
+        });
         fabAdd.setOnClickListener(aVoid -> {
             if (listener != null) listener.onAddClick();
         });
@@ -59,6 +70,11 @@ public class InvoiceViewHolder extends BaseViewHolder {
 
     public InvoiceViewHolder showInvoice(RealmResults<InvoiceModel> model) {
         adapter.updateRealmResults(model);
+        return this;
+    }
+
+    public InvoiceViewHolder showMessage(@NonNull String msg) {
+        Snackbar.make(vRoot, msg, Snackbar.LENGTH_LONG).show();
         return this;
     }
 
@@ -91,5 +107,7 @@ public class InvoiceViewHolder extends BaseViewHolder {
         void onItemClick(InvoiceModel model);
 
         void onRemoveReceiverClick(String receiverId);
+
+        void onReportClick();
     }
 }

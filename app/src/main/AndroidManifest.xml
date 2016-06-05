@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ru.annin.store">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name=".StoreApplication"
         android:allowBackup="false"
@@ -24,8 +27,8 @@
 
         <activity
             android:name=".presentation.ui.activity.MainActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/activity_main">
+            android:label="@string/activity_main"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
